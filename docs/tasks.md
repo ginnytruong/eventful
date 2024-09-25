@@ -55,6 +55,11 @@ Set up user registration:
 Task: Create Firestore collection for event registrations.
 Task: Implement sign-up function in EventList for users to join events.
 
+Testing Core Features
+Conduct thorough testing of all functionalities:
+Task: Test user login, event creation, sign-up.
+Task: Ensure responsiveness and accessibility across devices.
+
 Google Calendar Integration
 Integrate Google Calendar API:
 Task: Set up Google OAuth2 for adding events to users' calendars.
@@ -71,12 +76,11 @@ Implement error handling:
 Task: Add error messages for sign-ups, payments, and calendar issues.
 Task: Display loading indicators for async operations.
 
-Testing
-Conduct thorough testing of all functionalities:
-Task: Test user login, event creation, sign-up, payments, and calendar integration.
-Task: Ensure responsiveness and accessibility across devices.
-Week 4: Final Touches and Extensions
+Testing Google Calendar Integration & Stripe Payments
+Task: Test payments and calendar integration.
 
+
+Week 4: Final Touches and Extensions
 Polish UI and UX
 Finalize design elements:
 Task: Review and refine all UI components for a cohesive look.
