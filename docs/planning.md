@@ -37,7 +37,6 @@ eventId (string)
 title (string)
 description (string)
 date (timestamp)
-time (string)
 price (number)
 creatorId (string - ref to user who created the event)
 
