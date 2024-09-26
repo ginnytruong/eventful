@@ -35,9 +35,7 @@ useEffect(() => {
                     <li key={event.id}>
                         <Link to={`/events/${event.id}`}>
                             <h3>{event.title}</h3>
-                            <p>{event.description}</p>
                             <p>{event.date.toDate().toLocaleString()}</p>
-                            <p>${event.price}</p>
                         </Link>
                     </li>
                 ))}
