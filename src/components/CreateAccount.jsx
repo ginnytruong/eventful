@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, getDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
-const StaffCreateAccount = () => {
+const CreateAccount = () => {
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
@@ -53,16 +53,15 @@ const StaffCreateAccount = () => {
         email: user.email,
         fullName: fullName,
         eventsRegistered: [],
-        role: "staff",
+        role: "non-staff",
       });
 
-      navigate("/create-event");
+      navigate("/events");
     } catch (error) {
-      console.error("Create Account error:", error);
       if (error.code === "auth/email-already-in-use") {
         setError("Email is already registered. Please log in.");
       } else {
-        setError("An error occurred. Please try again.");
+        setError("An error occured. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -71,7 +70,7 @@ const StaffCreateAccount = () => {
 
   return (
     <div>
-      <h4>Create Staff Account</h4>
+      <h4>Create Account</h4>
       <form onSubmit={handleCreateAccount}>
         <label>
           Full Name:
@@ -122,4 +121,4 @@ const StaffCreateAccount = () => {
   );
 };
 
-export default StaffCreateAccount;
+export default CreateAccount;

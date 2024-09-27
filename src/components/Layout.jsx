@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
 import { auth, db } from "../firebase";
-import {getDoc, doc} from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
+
 
 const Layout = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -27,7 +28,7 @@ const Layout = ({ children }) => {
 
   const handleLogout = async () => {
     await signOut(auth);
-    navigate("/login");
+    navigate("/events");
   };
 
   return (
@@ -43,8 +44,8 @@ const Layout = ({ children }) => {
           </>
         ) : (
           <>
-            <Link to="/login/non-staff">Login</Link>
-            <Link to="/create-account/non-staff">Create Account</Link>
+            <Link to="/login">Login</Link>
+            <Link to="/create-account">Create Account</Link>
           </>
         )}
       </nav>
