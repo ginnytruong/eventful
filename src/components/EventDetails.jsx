@@ -6,9 +6,10 @@ import { AuthContext } from "../context/AuthContext";
 
 const EventDetails = () => {
     const { id } = useParams();
-    const { user } = useContext(AuthContext);
+    const { user, role } = useContext(AuthContext);
     const [event, setEvent] = useState(null);
     const [isRegistered, setIsRegistered] = useState(false);
+    const [registrationCount, setRegistrationCount] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -30,9 +31,20 @@ const EventDetails = () => {
                 setIsRegistered(!querySnapshot.empty);
             }
         };
+
+        const fetchRegistrationCount = async () => {
+            const q = query(collection(db, "Registrations"), where("eventId", "==", id));
+            const querySnapshot = await getDocs(q);
+            setRegistrationCount(querySnapshot.size);
+        }
     
         fetchEvent();
         checkRegistration();
+
+        if(role === "staff") {
+            fetchRegistrationCount();
+        }
+
         setLoading(false);
     }, [id, user]);
 
@@ -77,6 +89,8 @@ const EventDetails = () => {
         <p>{event.description}</p>
         <p>Date: {event.date.toDate().toString()}</p>
         <p>Price: £{event.price}</p>
+        {role === "staff" && (
+          <p>No. of Registrations: {registrationCount}</p>)}
         {user && !isRegistered && (
           <button onClick={handleRegistration}>Sign Up for Event</button>)}
         {isRegistered && (
