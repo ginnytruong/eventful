@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { db } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const CreateEvent = () => {
     const [title, setTitle] = useState("");
@@ -9,27 +10,26 @@ const CreateEvent = () => {
     const [date, setDate] = useState("");
     const [price, setPrice] = useState(0);
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-    // const currentUser = auth.currentUser;
-
-    // if(!currentUser){
-    //     alert("You must be logged in to create a new event.");
-    //     return;
-    // }
-
     try {
+        if(!user) {
+            alert("You must be logged in to create an event.");
+            return;
+        }
+
         await addDoc(collection(db, "Events"), {
             title,
             description,
             date: new Date(date),
             price: parseFloat(price),
-            // creatorId: currentUser.uid
+            creatorID: user.uid,
         });
         console.log("Event created successfully!");
-        navigate("/");
+        navigate("/events");
     } catch (error) {
         console.error("Error creating event:", error);
         alert("An error occurred while creating the event. Please try again.")
