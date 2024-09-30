@@ -7,6 +7,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { AuthContext } from "../context/AuthContext";
 
@@ -14,10 +15,16 @@ const MyEvents = () => {
   const { user } = useContext(AuthContext);
   const [registeredEvents, setRegisteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRegisteredEvents = async () => {
       try {
+        if (!user) {
+          navigate("/login");
+          return;
+        }
+        
         const registrationsQuery = query(
           collection(db, "Registrations"),
           where("userId", "==", user.uid)
@@ -46,10 +53,8 @@ const MyEvents = () => {
       }
     };
 
-    if (user) {
       fetchRegisteredEvents();
-    }
-  }, [user]);
+  }, [user, navigate]);
 
   if (loading) {
     return <div>Loading your registered events...</div>;

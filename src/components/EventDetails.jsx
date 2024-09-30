@@ -14,10 +14,16 @@ const EventDetails = () => {
 
     useEffect(() => {
         const fetchEvent = async () => {
+          try {
             const eventDoc = await getDoc(doc(db, "Events", id));
             if (eventDoc.exists()) {
-                setEvent(eventDoc.data());
+              setEvent(eventDoc.data());
             }
+          } catch (error) {
+            console.error("Error fetching event:", error);
+          } finally {
+            setLoading(false);
+          }
         };
 
         const checkRegistration = async () => {
@@ -44,9 +50,7 @@ const EventDetails = () => {
         if(role === "staff") {
             fetchRegistrationCount();
         }
-
-        setLoading(false);
-    }, [id, user]);
+    }, [id, user, role]);
 
     const handleRegistration = async () => {
         if (!user) {
