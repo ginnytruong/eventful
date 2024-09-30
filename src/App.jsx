@@ -6,6 +6,7 @@ import EventList from "./components/EventList";
 import EventDetails from "./components/EventDetails";
 import CreateAccount from "./components/CreateAccount";
 import Login from "./components/Login";
+import MyEvents from "./components/MyEvents";
 import ProtectedRoute from "./ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -28,6 +29,7 @@ const App = () => {
             />
             <Route path="/create-account" element={<CreateAccount />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/my-events" element={<MyEvents />} />
           </Routes>
         </Layout>
       </Router>

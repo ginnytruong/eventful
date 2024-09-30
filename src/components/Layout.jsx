@@ -13,27 +13,28 @@ const Layout = ({ children }) => {
     navigate("/events");
   };
 
-  return (
-    <div>
-      <nav>
-        <Link to="/events">Event List</Link>
-        {user && role === "staff" && (
-          <Link to="/create-event">Create Event</Link>
-        )}
-        {user ? (
-          <>
-            <button onClick={handleLogout}>Logout</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/create-account">Create Account</Link>
-          </>
-        )}
-      </nav>
-      <main>{children}</main>
-    </div>
-  );
+return (
+  <div>
+    <nav>
+      <Link to="/events">Event List</Link>
+      {user && role === "staff" && <Link to="/create-event">Create Event</Link>}
+      {user && role !== "staff" && (
+        <Link to="/my-events">My Events</Link>
+      )}
+      {user ? (
+        <>
+          <button onClick={handleLogout}>Logout</button>
+        </>
+      ) : (
+        <>
+          <Link to="/login">Login</Link>
+          <Link to="/create-account">Create Account</Link>
+        </>
+      )}
+    </nav>
+    <main>{children}</main>
+  </div>
+);
 };
 
 export default Layout;
