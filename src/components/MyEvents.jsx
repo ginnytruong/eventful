@@ -116,7 +116,7 @@ const MyEvents = () => {
               disabled={cancelEventId === event.id}
             >
               {cancelEventId === event.id
-                ? "Canceling..."
+                ? "Cancelling..."
                 : "Cancel Registration"}
             </button>
           </li>

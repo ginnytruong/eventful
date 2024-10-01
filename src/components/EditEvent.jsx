@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 
 const EditEvent = () => {
@@ -53,6 +53,21 @@ const EditEvent = () => {
         date: new Date(date),
         price: parseFloat(price),
       });
+
+      const registrationsQuery = query(
+        collection(db, "Registrations"),
+        where("eventId", "==", id)
+      );
+      const registrationsSnapshot = await getDocs(registrationsQuery);
+
+      const updates = registrationsSnapshot.docs.map(
+        async (registrationDoc) => {
+          await updateDoc(registrationDoc.ref, {
+            eventTitle: title,
+          });
+        }
+      );
+      await Promise.all(updates);
 
       navigate(`/events/${id}`);
     } catch (error) {
