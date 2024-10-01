@@ -137,6 +137,9 @@ const EventDetails = () => {
       {role === "staff" && (
         <>
           <p>No. of Registrations: {registrationCount}</p>
+          <button onClick={() => navigate(`/events/${id}/edit`)}>
+            Edit Event
+          </button>
           <button onClick={handleDeleteEvent} disabled={deleting}>
             {deleting ? "Deleting..." : "Delete Event"}
           </button>

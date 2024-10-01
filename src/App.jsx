@@ -7,6 +7,7 @@ import EventDetails from "./components/EventDetails";
 import CreateAccount from "./components/CreateAccount";
 import Login from "./components/Login";
 import MyEvents from "./components/MyEvents";
+import EditEvent from "./components/EditEvent";
 import ProtectedRoute from "./ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 
@@ -24,6 +25,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <CreateEvent />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/events/:id/edit"
+              element={
+                <ProtectedRoute roleRequired="staff">
+                  <EditEvent />
                 </ProtectedRoute>
               }
             />
