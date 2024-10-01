@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
+import Navbar from "./components/Navbar";
 import CreateEvent from "./components/CreateEvent";
 import EventList from "./components/EventList";
 import EventDetails from "./components/EventDetails";
@@ -15,7 +15,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <Layout>
+        <Navbar />
           <Routes>
             <Route path="/" element={<EventList />} />
             <Route path="/events" element={<EventList />} />
@@ -40,7 +40,6 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/my-events" element={<MyEvents />} />
           </Routes>
-        </Layout>
       </Router>
     </AuthProvider>
   );
