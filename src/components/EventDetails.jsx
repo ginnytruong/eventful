@@ -11,6 +11,7 @@ const EventDetails = () => {
     const [isRegistered, setIsRegistered] = useState(false);
     const [registrationCount, setRegistrationCount] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [registering, setRegistering] = useState(false);
 
     useEffect(() => {
         const fetchEvent = async () => {
@@ -58,7 +59,9 @@ const EventDetails = () => {
             return;
         }
         try {
+          setRegistering(true);
             if(isRegistered) {
+                setRegistering(false);
                 return;
             }
 
@@ -78,6 +81,8 @@ const EventDetails = () => {
         } catch (error) {
             console.error("Error registering for event:". error);
             alert("An error occurred while registering for the event. Please try again.");
+        } finally {
+          setRegistering(false);
         }
     };
     if (loading) {
@@ -93,12 +98,15 @@ const EventDetails = () => {
         <p>{event.description}</p>
         <p>Date: {event.date.toDate().toString()}</p>
         <p>Price: £{event.price}</p>
-        {role === "staff" && (
-          <p>No. of Registrations: {registrationCount}</p>)}
+        {role === "staff" && <p>No. of Registrations: {registrationCount}</p>}
         {user && !isRegistered && (
-          <button onClick={handleRegistration}>Sign Up for Event</button>)}
+          <button onClick={handleRegistration} disabled={registering}>
+            {registering ? "Signing up..." : "Sign Up for Event"}
+          </button>
+        )}
         {isRegistered && (
-          <p>You have successfully registered for this event!</p>)}
+          <p>You have successfully registered for this event!</p>
+        )}
       </div>
     );
 };
