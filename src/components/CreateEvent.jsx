@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
@@ -9,9 +10,16 @@ const CreateEvent = () => {
     const [description, setDescription] = useState("");
     const [date, setDate] = useState("");
     const [price, setPrice] = useState(0);
+    const [image, setImage] = useState(null);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
+
+    const handleImageChange = (e) => {
+      if (e.target.files[0]) {
+        setImage(e.target.files[0]);
+      }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,12 +32,20 @@ const CreateEvent = () => {
             return;
         }
 
+        let imageUrl = null;
+
+        if (image) {
+          const storageRef = ref(storage, 'event_images/${image.name');
+          const uploadTask = await uploadBytesResumable(storageRef, image);
+          imageUrl = await getDownloadURL(uploadTask.ref);
+        }
         await addDoc(collection(db, "Events"), {
             title,
             description,
             date: new Date(date),
             price: parseFloat(price),
             creatorID: user.uid,
+            imageUrl,
         });
         navigate("/events");
     } catch (error) {
@@ -88,6 +104,11 @@ return (
           required
           min="0"
         />
+      </label>
+      <br />
+      <label>
+        Event Image:
+        <input type="file" accept="image/*" onChange={handleImageChange} />
       </label>
       <br />
       <button type="submit" disabled={isButtonDisabled()}>

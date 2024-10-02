@@ -20,7 +20,9 @@ const EventDetails = () => {
       try {
         const eventDoc = await getDoc(doc(db, "Events", id));
         if (eventDoc.exists()) {
-          setEvent(eventDoc.data());
+          const eventData = eventDoc.data();
+          console.log("Fetched event data:", eventData);
+          setEvent(eventData);
         }
       } catch (error) {
         console.error("Error fetching event:", error);
@@ -131,6 +133,13 @@ const EventDetails = () => {
   return (
     <div>
       <h2>{event.title}</h2>
+      {event.imageUrl && (
+        <img
+          src={event.imageUrl}
+          alt={event.title}
+          style={{ maxWidth: "50%", height: "auto" }}
+        />
+      )}
       <p>{event.description}</p>
       <p>Date: {event.date.toDate().toString()}</p>
       <p>Price: £{event.price}</p>
