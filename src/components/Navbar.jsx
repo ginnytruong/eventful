@@ -43,12 +43,20 @@ const Navbar = () => {
             </Link>
           )}
           {!user ? (
-            <Link
-              to="/login"
-              className="text-gray-800 hover:bg-gray-200 px-3 py-2 rounded font-poppins"
-            >
-              Login
-            </Link>
+            <>
+              <Link
+                to="/login"
+                className="text-gray-800 hover:bg-gray-200 px-3 py-2 rounded font-poppins"
+              >
+                Login
+              </Link>
+              <Link
+                to="/create-account"
+                className="text-gray-800 hover:bg-gray-200 px-3 py-2 rounded font-poppins"
+              >
+                Create Account
+              </Link>
+            </>
           ) : (
             <button
               onClick={handleLogout}
