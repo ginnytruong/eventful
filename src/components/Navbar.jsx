@@ -24,7 +24,22 @@ const Navbar = () => {
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center font-poppins">
         <div className="text-gray-800 text-xl font-bold">
-          <Link to="/">Event App</Link>
+          <Link to="/">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="#FF5A5F"
+              className="w-8 h-8 text-gray-800"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 7V3m8 4V3m-9 4h10M3 11h18M4 19h16a2 2 0 002-2V7a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+          </Link>
         </div>
         <div className="flex items-center space-x-6">
           <Link
