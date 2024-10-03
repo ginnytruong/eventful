@@ -8,6 +8,7 @@ import { AuthContext } from "../context/AuthContext";
 const CreateEvent = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [location, setLocation] = useState("");
     const [date, setDate] = useState("");
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState(null);
@@ -44,6 +45,7 @@ const CreateEvent = () => {
             description,
             date: new Date(date),
             price: parseFloat(price),
+            location,
             creatorID: user.uid,
             imageUrl,
         });
@@ -59,7 +61,7 @@ const CreateEvent = () => {
 const isButtonDisabled = () => {
     const isPriceValid = price >= 0;
     const isDateValid = new Date(date) > new Date();
-    return !title || !description || !date || !isPriceValid || !isDateValid || loading;
+    return !title || !description || !location || !date || !isPriceValid || !isDateValid || loading;
 }
 
 return (
@@ -82,6 +84,16 @@ return (
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
+        />
+      </label>
+      <br />
+      <label>
+        Location:
+        <input 
+        type="text"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        required
         />
       </label>
       <br />

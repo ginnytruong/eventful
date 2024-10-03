@@ -141,6 +141,7 @@ const EventDetails = () => {
         />
       )}
       <p>{event.description}</p>
+      <p>{event.location}</p>
       <p>Date: {event.date.toDate().toString()}</p>
       <p>Price: £{event.price}</p>
       {role === "staff" && (

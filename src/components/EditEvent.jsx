@@ -9,6 +9,7 @@ const EditEvent = () => {
   const [event, setEvent] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(true);
@@ -29,6 +30,7 @@ const EditEvent = () => {
 
           setTitle(eventData.title);
           setDescription(eventData.description);
+          setLocation(eventData.location);
           setDate(eventDate.toISOString().slice(0, 16));
           setPrice(eventData.price);
         }
@@ -50,6 +52,7 @@ const EditEvent = () => {
       await updateDoc(eventRef, {
         title,
         description,
+        location,
         date: new Date(date),
         price: parseFloat(price),
       });
@@ -104,6 +107,15 @@ const EditEvent = () => {
           />
         </label>
         <br />
+        <label>
+          Location:
+          <input 
+          type="text"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          required
+          />
+        </label>
         <label>
           Date and Time:
           <input

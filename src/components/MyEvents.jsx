@@ -108,7 +108,15 @@ const MyEvents = () => {
         {registeredEvents.map((event) => (
           <li key={event.id}>
             <h3>{event.title}</h3>
+            {event.imageUrl && (
+              <img
+                src={event.imageUrl}
+                alt={event.title}
+                style={{ maxWidth: "50%", height: "auto" }}
+              />
+            )}
             <p>{event.description}</p>
+            <p>{event.location}</p>
             <p>Date: {event.date.toDate().toString()}</p>
             <p>Price: £{event.price}</p>
             <button
