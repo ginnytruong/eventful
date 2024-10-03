@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase"; 
 import { db } from "../firebase";
 
 const EditEvent = () => {
@@ -8,6 +10,7 @@ const EditEvent = () => {
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [title, setTitle] = useState("");
+  const [image, setImage] = useState(null);
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
@@ -44,13 +47,29 @@ const EditEvent = () => {
     fetchEvent();
   }, [id]);
 
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
   const handleUpdateEvent = async (e) => {
     e.preventDefault();
     setUpdating(true);
+    const eventRef = doc(db, "Events", id);
     try {
-      const eventRef = doc(db, "Events", id);
+      let imageUrl = null;
+
+      if (image) {
+        const storageRef = ref(storage, `event_images/${image.name}`);
+        const uploadTask = await uploadBytesResumable(storageRef, image);
+        const snapshot = await uploadTask;
+        imageUrl = await getDownloadURL(uploadTask.ref);
+      }
+
       await updateDoc(eventRef, {
         title,
+        imageUrl,
         description,
         location,
         date: new Date(date),
@@ -84,64 +103,81 @@ const EditEvent = () => {
     return <div>Loading event details...</div>;
   }
 
-  return (
-    <div>
-      <h2>Edit Event</h2>
+return (
+  <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg font-poppins">
+      <h2 className="text-center text-xl font-bold mb-6">Edit Event</h2>
       <form onSubmit={handleUpdateEvent}>
-        <label>
-          Title:
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Title:</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </label>
-        <br />
-        <label>
-          Description:
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Description:</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </label>
-        <br />
-        <label>
-          Location:
-          <input 
-          type="text"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          required
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Location:</label>
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            required
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </label>
-        <label>
-          Date and Time:
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Date and Time:</label>
           <input
             type="datetime-local"
             value={date}
             onChange={(e) => setDate(e.target.value)}
             required
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </label>
-        <br />
-        <label>
-          Price:
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Price:</label>
           <input
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             required
+            className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </label>
-        <br />
-        <button type="submit" disabled={updating}>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Event Image:</label>
+          <input
+            type="file"
+            onChange={handleImageChange}
+            className="w-full border border-gray-300 p-2 rounded"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={updating}
+          className={`w-full p-2 text-white font-bold rounded-md transition duration-200 ${
+            loading ? "bg-gray-400" : "bg-[#FF5A5F] hover:bg-[#FF4C4F]"
+          }`}
+        >
           {updating ? "Updating..." : "Update Event"}
         </button>
       </form>
     </div>
-  );
+  </div>
+);
 };
 
 export default EditEvent;

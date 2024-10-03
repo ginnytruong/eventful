@@ -21,7 +21,6 @@ const EventDetails = () => {
         const eventDoc = await getDoc(doc(db, "Events", id));
         if (eventDoc.exists()) {
           const eventData = eventDoc.data();
-          console.log("Fetched event data:", eventData);
           setEvent(eventData);
         }
       } catch (error) {
