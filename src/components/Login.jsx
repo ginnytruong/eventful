@@ -3,6 +3,7 @@ import { auth, db } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { getDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import "./Form.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -57,34 +58,34 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h5>Login</h5>
-      <form onSubmit={handleLogin}>
-        <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        <br />
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging In..." : "Log In"}
-        </button>
-        {error && <p>{error}</p>}
-      </form>
+    <div className="form-wrapper">
+      <div className="form-container">
+        <h5>Login</h5>
+        <form onSubmit={handleLogin}>
+          <label>
+            Email:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Password:
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </label>
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging In..." : "Log In"}
+          </button>
+          {error && <p className="error-message">{error}</p>}
+        </form>
+      </div>
     </div>
   );
 };
