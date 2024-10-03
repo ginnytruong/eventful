@@ -3,7 +3,6 @@ import { auth, db } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { getDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import "./Form.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -58,36 +57,45 @@ const Login = () => {
   };
 
   return (
-    <div className="form-wrapper">
-      <div className="form-container">
-        <h5>Login</h5>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg font-poppins">
+        <h5 className="text-center text-xl font-bold mb-6">Login</h5>
         <form onSubmit={handleLogin}>
-          <label>
-            Email:
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Email:</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </label>
-          <label>
-            Password:
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Password:</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </label>
-          <button type="submit" disabled={loading}>
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full p-2 text-white rounded transition duration-200 ${
+              loading ? "bg-gray-400" : "bg-[#FF5A5F] hover:bg-[#FF4C4F]"
+            }`}
+          >
             {loading ? "Logging In..." : "Log In"}
           </button>
-          {error && <p className="error-message">{error}</p>}
+          {error && <p className="text-red-500 text-center mt-4">{error}</p>}
         </form>
       </div>
     </div>
   );
 };
+
 
 export default Login;
