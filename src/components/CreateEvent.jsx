@@ -4,6 +4,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { v4 as uuidv4 } from "uuid";
 
 const CreateEvent = () => {
   const [title, setTitle] = useState("");
@@ -36,10 +37,14 @@ const CreateEvent = () => {
       let imageUrl = null;
 
       if (image) {
-        const storageRef = ref(storage, "event_images/${image.name");
-        const uploadTask = await uploadBytesResumable(storageRef, image);
-        imageUrl = await getDownloadURL(uploadTask.ref);
+        const uniqueFilename = `${uuidv4()}-${image.name}`;
+        const storageRef = ref(storage, `event_images/${uniqueFilename}`);
+
+        const uploadTask = uploadBytesResumable(storageRef, image);
+        await uploadTask;
+        imageUrl = await getDownloadURL(storageRef);
       }
+
       await addDoc(collection(db, "Events"), {
         title,
         description,
