@@ -94,72 +94,95 @@ const EventDetails = () => {
     }
   };
 
-    const handleDeleteEvent = async () => {
-      if (window.confirm("Are you sure you want to delete this event?")) {
-        setDeleting(true);
-        try {
-          const registrationQuery = query(
-            collection(db, "Registrations"),
-            where("eventId", "==", id)
-          );
-          const registrationsSnapshot = await getDocs(registrationQuery);
-          const deletePromises = registrationsSnapshot.docs.map((docSnap) =>
-            deleteDoc(docSnap.ref)
-          );
-          await Promise.all(deletePromises);
+  const handleDeleteEvent = async () => {
+    if (window.confirm("Are you sure you want to delete this event?")) {
+      setDeleting(true);
+      try {
+        const registrationQuery = query(
+          collection(db, "Registrations"),
+          where("eventId", "==", id)
+        );
+        const registrationsSnapshot = await getDocs(registrationQuery);
+        const deletePromises = registrationsSnapshot.docs.map((docSnap) =>
+          deleteDoc(docSnap.ref)
+        );
+        await Promise.all(deletePromises);
 
-          await deleteDoc(doc(db, "Events", id));
+        await deleteDoc(doc(db, "Events", id));
 
-          navigate("/events");
-        } catch (error) {
-          console.error("Error deleting event:", error);
-          alert(
-            "An error occurred while deleting the event. Please try again."
-          );
-        } finally {
-          setDeleting(false);
-        }
+        navigate("/events");
+      } catch (error) {
+        console.error("Error deleting event:", error);
+        alert("An error occurred while deleting the event. Please try again.");
+      } finally {
+        setDeleting(false);
       }
-    };
+    }
+  };
 
   if (loading) {
-    return <div>Loading event details...</div>;
+    return <div className="loading-text">Loading event details...</div>;
   }
   if (!event) {
-    return <div>Event not found.</div>;
+    return <div className="loading-text">Event not found.</div>;
   }
 
   return (
-    <div>
-      <h2>{event.title}</h2>
+    <div className="event-details-container">
       {event.imageUrl && (
-        <img
-          src={event.imageUrl}
-          alt={event.title}
-          style={{ maxWidth: "50%", height: "auto" }}
-        />
+        <img src={event.imageUrl} alt={event.title} className="event-image" />
       )}
-      <p>{event.description}</p>
-      <p>{event.location}</p>
-      <p>Date: {event.date.toDate().toString()}</p>
-      <p>Price: £{event.price}</p>
+      <h2 className="event-title">{event.title}</h2>
+      <p className="event-location">{event.location}</p>
+      <hr className="my-4" />
+      <p className="event-description">{event.description}</p>
+      <hr className="my-4" />
+      <p className="event-date">{event.date.toDate().toString()}</p>
+      <p className="event-price">Price: £{event.price}</p>
+
       {role === "staff" && (
-        <>
-          <p>No. of Registrations: {registrationCount}</p>
-          <button onClick={() => navigate(`/events/${id}/edit`)}>
-            Edit Event
-          </button>
-          <button onClick={handleDeleteEvent} disabled={deleting}>
-            {deleting ? "Deleting..." : "Delete Event"}
-          </button>
-        </>
+        <div className="staff-actions mb-4">
+          <p className="registration-count">
+            Guests Registered: {registrationCount}
+          </p>
+          <div className="button-container flex">
+            {" "}
+            <button
+              onClick={() => navigate(`/events/${id}/edit`)}
+              className="button button-primary mr-2"
+            >
+              Edit Event
+            </button>
+            <button
+              onClick={handleDeleteEvent}
+              disabled={deleting}
+              className={`button button-danger ${
+                deleting ? "button-disabled" : ""
+              }`}
+            >
+              {deleting ? "Deleting..." : "Delete Event"}
+            </button>
+          </div>
+        </div>
       )}
-      {user && !isRegistered && (
-        <button onClick={handleRegistration} disabled={registering}>
+
+      {user && role !== "staff" && !isRegistered && (
+        <button
+          onClick={handleRegistration}
+          disabled={registering}
+          className={`button button-primary ${
+            registering ? "button-disabled" : ""
+          }`}
+        >
           {registering ? "Signing up..." : "Sign Up for Event"}
         </button>
       )}
-      {isRegistered && <p>You have successfully registered for this event!</p>}
+
+      {isRegistered && (
+        <p className="success-message">
+          You have successfully registered for this event!
+        </p>
+      )}
     </div>
   );
 };

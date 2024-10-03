@@ -94,34 +94,45 @@ const MyEvents = () => {
   };
 
   if (loading) {
-    return <div>Loading your registered events...</div>;
+    return (
+      <div className="text-center py-4">Loading your registered events...</div>
+    );
   }
 
   if (registeredEvents.length === 0) {
-    return <div>You have not registered for any events.</div>;
+    return (
+      <div className="text-center py-4">
+        You have not registered for any events.
+      </div>
+    );
   }
 
   return (
-    <div>
-      <h2>Your Events</h2>
-      <ul>
+    <div className="container mx-auto p-4 md:p-8 lg:p-12">
+      <h2 className="text-3xl font-bold mb-6">Upcoming Events</h2>
+      <ul className="space-y-6">
         {registeredEvents.map((event) => (
-          <li key={event.id}>
-            <h3>{event.title}</h3>
+          <li key={event.id} className="border rounded-lg p-4 shadow-md">
             {event.imageUrl && (
               <img
-                src={event.imageUrl}
-                alt={event.title}
-                style={{ maxWidth: "50%", height: "auto" }}
+              src={event.imageUrl}
+              alt={event.title}
+              className="w-full rounded-lg mb-4"
               />
             )}
-            <p>{event.description}</p>
-            <p>{event.location}</p>
-            <p>Date: {event.date.toDate().toString()}</p>
-            <p>Price: £{event.price}</p>
+            <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
+            <p className="text-gray-700 text-md mb-2">{event.description}</p>
+            <p className="text-gray-600 text-md mb-2">{event.location}</p>
+            <p className="text-gray-600 text-md mb-2">{event.date.toDate().toString()}</p>
+            <p className="text-gray-600 text-md mb-4">Price: £{event.price}</p>
             <button
               onClick={() => handleCancellation(event.id)}
               disabled={cancelEventId === event.id}
+              className={`mt-2 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-200 ${
+                cancelEventId === event.id
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
+              }`}
             >
               {cancelEventId === event.id
                 ? "Cancelling..."
@@ -133,6 +144,5 @@ const MyEvents = () => {
     </div>
   );
 };
-
 
 export default MyEvents;

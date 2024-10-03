@@ -70,65 +70,64 @@ const CreateAccount = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg font-poppins">
+      <div className="form-container">
         <h4 className="text-center text-xl font-bold mb-6">Create Account</h4>
         <form onSubmit={handleCreateAccount}>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Full Name:</label>
+            <label className="form-label">Full Name:</label>
             <input
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Email:</label>
+            <label className="form-label">Email:</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Password:</label>
+            <label className="form-label">Password:</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">
-              Confirm Password:
-            </label>
+            <label className="form-label">Confirm Password:</label>
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className={`w-full p-2 text-white font-bold rounded-md transition duration-200 ${
-              loading ? "bg-gray-400" : "bg-[#FF5A5F] hover:bg-[#FF4C4F]"
+            className={`button ${
+              loading ? "button-disabled" : "button-primary"
             }`}
           >
             {loading ? "Signing Up..." : "Sign Up"}
           </button>
-          {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+          {error && <p className="error-message">{error}</p>}
         </form>
       </div>
     </div>
   );
 };
+
 
 export default CreateAccount;

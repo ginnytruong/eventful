@@ -74,71 +74,71 @@ const CreateEvent = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg font-poppins">
+      <div className="form-container">
         <h2 className="text-center text-xl font-bold mb-6">Create Event</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Title:</label>
+            <label className="form-label">Title:</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Description:</label>
+            <label className="form-label">Description:</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Location:</label>
+            <label className="form-label">Location:</label>
             <input
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               required
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Date and Time:</label>
+            <label className="form-label">Date and Time:</label>
             <input
               type="datetime-local"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Price:</label>
+            <label className="form-label">Price:</label>
             <input
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Event Image:</label>
+            <label className="form-label">Event Image:</label>
             <input
               type="file"
               onChange={handleImageChange}
-              className="w-full border border-gray-300 p-2 rounded"
+              className="form-input"
             />
           </div>
           <button
             type="submit"
             disabled={isButtonDisabled()}
-            className={`w-full p-2 text-white font-bold rounded-md transition duration-200 ${
-              loading ? "bg-gray-400" : "bg-[#FF5A5F] hover:bg-[#FF4C4F]"
+            className={`button ${
+              loading ? "button-disabled" : "button-primary"
             }`}
           >
             {loading ? "Creating Event..." : "Create Event"}
