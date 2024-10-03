@@ -100,7 +100,7 @@ const EditEvent = () => {
   };
 
   if (loading) {
-    return <div>Loading event details...</div>;
+    return <div className="loading-text">Loading event details...</div>;
   }
 
   return (

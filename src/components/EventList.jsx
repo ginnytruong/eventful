@@ -30,7 +30,7 @@ const EventList = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading events...</div>;
+    return <div className="loading-text">Loading events...</div>;
   }
 
   if (error) {

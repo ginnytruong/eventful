@@ -95,7 +95,7 @@ const MyEvents = () => {
 
   if (loading) {
     return (
-      <div className="text-center py-4">Loading your registered events...</div>
+      <div className="loading-text">Loading your registered events...</div>
     );
   }
 
