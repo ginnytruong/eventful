@@ -127,64 +127,64 @@ const EventDetails = () => {
     return <div className="loading-text">Event not found.</div>;
   }
 
-  return (
-    <div className="event-details-container">
-      {event.imageUrl && (
-        <img src={event.imageUrl} alt={event.title} className="event-image" />
-      )}
-      <h2 className="event-title">{event.title}</h2>
-      <p className="event-location">{event.location}</p>
-      <hr className="my-4" />
-      <p className="event-description">{event.description}</p>
-      <hr className="my-4" />
-      <p className="event-date">{event.date.toDate().toString()}</p>
-      <p className="event-price">Price: £{event.price}</p>
+    return (
+      <div className="event-details-container">
+        {event.imageUrl && (
+          <img src={event.imageUrl} alt={event.title} className="event-image" />
+        )}
+        <h2 className="event-title">{event.title}</h2>
+        <p className="event-location">{event.location}</p>
+        <hr className="my-4" />
+        <p className="event-description">{event.description}</p>
+        <hr className="my-4" />
+        <p className="event-date">{event.date.toDate().toString()}</p>
+        <p className="event-price">Price: £{event.price}</p>
 
-      {role === "staff" && (
-        <div className="staff-actions mb-4">
-          <p className="registration-count">
-            Guests Registered: {registrationCount}
-          </p>
-          <div className="button-container flex">
-            {" "}
-            <button
-              onClick={() => navigate(`/events/${id}/edit`)}
-              className="button button-primary mr-2"
-            >
-              Edit Event
-            </button>
-            <button
-              onClick={handleDeleteEvent}
-              disabled={deleting}
-              className={`button button-danger ${
-                deleting ? "button-disabled" : ""
-              }`}
-            >
-              {deleting ? "Deleting..." : "Delete Event"}
-            </button>
+        {role === "staff" && (
+          <div className="staff-actions mb-4">
+            <p className="registration-count">
+              Guests Registered: {registrationCount}
+            </p>
+            <div className="button-container flex">
+              {" "}
+              <button
+                onClick={() => navigate(`/events/${id}/edit`)}
+                className="button button-primary mr-2"
+              >
+                Edit Event
+              </button>
+              <button
+                onClick={handleDeleteEvent}
+                disabled={deleting}
+                className={`button button-danger ${
+                  deleting ? "button-disabled" : ""
+                }`}
+              >
+                {deleting ? "Deleting..." : "Delete Event"}
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {user && role !== "staff" && !isRegistered && (
-        <button
-          onClick={handleRegistration}
-          disabled={registering}
-          className={`button button-primary ${
-            registering ? "button-disabled" : ""
-          }`}
-        >
-          {registering ? "Signing up..." : "Sign Up for Event"}
-        </button>
-      )}
+        {user && role !== "staff" && !isRegistered && (
+          <button
+            onClick={handleRegistration}
+            disabled={registering}
+            className={`button button-primary ${
+              registering ? "button-disabled" : ""
+            }`}
+          >
+            {registering ? "Signing up..." : "Sign Up for Event"}
+          </button>
+        )}
 
-      {isRegistered && (
-        <p className="success-message">
-          You have successfully registered for this event!
-        </p>
-      )}
-    </div>
-  );
-};
+        {isRegistered && (
+          <p className="success-message">
+            You have successfully registered for this event!
+          </p>
+        )}
+      </div>
+    );
+  };
 
 export default EventDetails;

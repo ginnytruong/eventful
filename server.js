@@ -24,7 +24,7 @@ fs.readFile(CREDENTIALS_PATH, (err, content) => {
   app.get("/", (req, res) => {
     res.send("Hello! This is your event platform server.");
   });
-  
+
   app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
   });
