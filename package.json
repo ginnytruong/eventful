@@ -10,7 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
     "firebase": "^10.13.2",
+    "gapi-script": "^1.2.0",
+    "googleapis": "^144.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
