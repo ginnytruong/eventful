@@ -58,12 +58,11 @@ const EditEvent = () => {
     setUpdating(true);
     const eventRef = doc(db, "Events", id);
     try {
-      let imageUrl = null;
+      let imageUrl = event.imageUrl;
 
       if (image) {
         const storageRef = ref(storage, `event_images/${image.name}`);
         const uploadTask = await uploadBytesResumable(storageRef, image);
-        const snapshot = await uploadTask;
         imageUrl = await getDownloadURL(uploadTask.ref);
       }
 
