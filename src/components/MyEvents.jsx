@@ -93,6 +93,10 @@ const MyEvents = () => {
     }
   };
 
+  const handleEventClick = (eventId) => {
+    navigate(`/events/${eventId}`);
+  };
+
   if (loading) {
     return (
       <div className="loading-text">Loading your registered events...</div>
@@ -113,18 +117,30 @@ const MyEvents = () => {
       <ul className="space-y-6">
         {registeredEvents.map((event) => (
           <li key={event.id} className="border rounded-lg p-4 shadow-md">
-            {event.imageUrl && (
-              <img
-              src={event.imageUrl}
-              alt={event.title}
-              className="w-full rounded-lg mb-4"
-              />
-            )}
-            <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-            <p className="text-gray-700 text-md mb-2">{event.description}</p>
-            <p className="text-gray-600 text-md mb-2">{event.location}</p>
-            <p className="text-gray-600 text-md mb-2">{event.date.toDate().toString()}</p>
-            <p className="text-gray-600 text-md mb-4">Price: £{event.price}</p>
+            <div
+              onClick={() => handleEventClick(event.id)}
+              className="cursor-pointer"
+            >
+              {event.imageUrl && (
+                <img
+                  src={event.imageUrl}
+                  alt={event.title}
+                  className="w-full rounded-lg mb-4"
+                />
+              )}
+              <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
+              <p className="text-gray-700 text-md mb-2">{event.description}</p>
+              <p className="text-gray-600 text-md mb-2">{event.location}</p>
+              <p className="text-gray-600 text-md mb-2">
+                Start: {event.startDateTime.toDate().toString()}
+              </p>
+              <p className="text-gray-600 text-md mb-2">
+                End: {event.endDateTime.toDate().toString()}
+              </p>
+              <p className="text-gray-600 text-md mb-4">
+                Price: £{event.price}
+              </p>
+            </div>
             <button
               onClick={() => handleCancellation(event.id)}
               disabled={cancelEventId === event.id}
@@ -144,5 +160,6 @@ const MyEvents = () => {
     </div>
   );
 };
+
 
 export default MyEvents;

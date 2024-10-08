@@ -85,7 +85,7 @@ const EventDetails = () => {
 
       setIsRegistered(true);
     } catch (error) {
-      console.error("Error registering for event:".error);
+      console.error("Error registering for event:", error);
       alert(
         "An error occurred while registering for the event. Please try again."
       );
@@ -137,7 +137,10 @@ const EventDetails = () => {
         <hr className="my-4" />
         <p className="event-description">{event.description}</p>
         <hr className="my-4" />
-        <p className="event-date">{event.date.toDate().toString()}</p>
+        <p className="event-datetime">
+          Start: {event.startDateTime.toDate().toString()} <br />
+          End: {event.endDateTime.toDate().toString()}
+        </p>
         <p className="event-price">Price: £{event.price}</p>
 
         {role === "staff" && (
@@ -187,4 +190,4 @@ const EventDetails = () => {
     );
   };
 
-export default EventDetails;
+  export default EventDetails;

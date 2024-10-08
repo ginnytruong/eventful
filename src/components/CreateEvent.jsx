@@ -10,7 +10,8 @@ const CreateEvent = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [date, setDate] = useState("");
+  const [startDateTime, setStartDateTime] = useState(""); // Renamed
+  const [endDateTime, setEndDateTime] = useState(""); // Renamed
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,8 @@ const CreateEvent = () => {
       await addDoc(collection(db, "Events"), {
         title,
         description,
-        date: new Date(date),
+        startDateTime: new Date(startDateTime), // Use start date
+        endDateTime: new Date(endDateTime), // Use end date
         price: parseFloat(price),
         location,
         creatorID: user.uid,
@@ -65,14 +67,17 @@ const CreateEvent = () => {
 
   const isButtonDisabled = () => {
     const isPriceValid = price >= 0;
-    const isDateValid = new Date(date) > new Date();
+    const isStartDateValid = new Date(startDateTime) > new Date();
+    const isEndDateValid = new Date(endDateTime) > new Date(startDateTime); // Ensure end is after start
     return (
       !title ||
       !description ||
       !location ||
-      !date ||
+      !startDateTime ||
+      !endDateTime ||
       !isPriceValid ||
-      !isDateValid ||
+      !isStartDateValid ||
+      !isEndDateValid ||
       loading
     );
   };
@@ -112,11 +117,21 @@ const CreateEvent = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Date and Time:</label>
+            <label className="form-label">Start Date and Time:</label>
             <input
               type="datetime-local"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={startDateTime}
+              onChange={(e) => setStartDateTime(e.target.value)}
+              required
+              className="form-input"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="form-label">End Date and Time:</label>
+            <input
+              type="datetime-local"
+              value={endDateTime}
+              onChange={(e) => setEndDateTime(e.target.value)}
               required
               className="form-input"
             />

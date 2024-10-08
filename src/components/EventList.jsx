@@ -15,7 +15,8 @@ const EventList = () => {
         const eventsData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-          date: doc.data().date.toDate(),
+          startDateTime: doc.data().startDateTime.toDate(),
+          endDateTime: doc.data().endDateTime.toDate(),
         }));
         setEvents(eventsData);
       } catch (error) {
@@ -60,7 +61,10 @@ const EventList = () => {
                 {event.location}
               </p>
               <p className="font-poppins text-sm text-gray-600">
-                {new Date(event.date).toLocaleString()}
+                Start: {event.startDateTime.toLocaleString()}{" "}
+              </p>
+              <p className="font-poppins text-sm text-gray-600">
+                End: {event.endDateTime.toLocaleString()}{" "}
               </p>
             </Link>
           </div>

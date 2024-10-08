@@ -13,7 +13,8 @@ const EditEvent = () => {
   const [image, setImage] = useState(null);
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [date, setDate] = useState("");
+  const [startDateTime, setStartDateTime] = useState(""); // New state for start date and time
+  const [endDateTime, setEndDateTime] = useState("");
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
@@ -26,15 +27,20 @@ const EditEvent = () => {
           const eventData = eventDoc.data();
           setEvent(eventData);
 
-          const eventDate =
-            eventData.date instanceof Date
-              ? eventData.date
-              : eventData.date.toDate();
+          const eventStartDateTime =
+            eventData.startDateTime instanceof Date
+              ? eventData.startDateTime
+              : eventData.startDateTime.toDate();
+          const eventEndDateTime =
+            eventData.endDateTime instanceof Date
+              ? eventData.endDateTime
+              : eventData.endDateTime.toDate();
 
           setTitle(eventData.title);
           setDescription(eventData.description);
           setLocation(eventData.location);
-          setDate(eventDate.toISOString().slice(0, 16));
+          setStartDateTime(eventStartDateTime.toISOString().slice(0, 16)); // Start Date
+          setEndDateTime(eventEndDateTime.toISOString().slice(0, 16)); // End Date
           setPrice(eventData.price);
         }
       } catch (error) {
@@ -71,7 +77,8 @@ const EditEvent = () => {
         imageUrl,
         description,
         location,
-        date: new Date(date),
+        startDateTime: new Date(startDateTime), // Update start date
+        endDateTime: new Date(endDateTime), // Update end date
         price: parseFloat(price),
       });
 
@@ -137,11 +144,21 @@ const EditEvent = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Date and Time:</label>
+            <label className="form-label">Start Date and Time:</label>
             <input
               type="datetime-local"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={startDateTime}
+              onChange={(e) => setStartDateTime(e.target.value)}
+              required
+              className="form-input"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="form-label">End Date and Time:</label>
+            <input
+              type="datetime-local"
+              value={endDateTime}
+              onChange={(e) => setEndDateTime(e.target.value)}
               required
               className="form-input"
             />
