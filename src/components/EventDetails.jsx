@@ -120,6 +120,29 @@ const EventDetails = () => {
     }
   };
 
+  const addToGoogleCalendar = () => {
+    if (!event) return;
+
+    const { title, description, location, startDateTime, endDateTime } = event;
+
+    const start = startDateTime
+      .toDate()
+      .toISOString()
+      .replace(/-|:|\.|Z/g, "");
+    const end = endDateTime
+      .toDate()
+      .toISOString()
+      .replace(/-|:|\.|Z/g, "");
+
+    const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+      title
+    )}&details=${encodeURIComponent(description)}&location=${encodeURIComponent(
+      location
+    )}&dates=${start}/${end}`;
+
+    window.open(calendarUrl, "_blank");
+  };
+
   if (loading) {
     return <div className="loading-text">Loading event details...</div>;
   }
@@ -127,45 +150,52 @@ const EventDetails = () => {
     return <div className="loading-text">Event not found.</div>;
   }
 
-    return (
-      <div className="event-details-container">
-        {event.imageUrl && (
-          <img src={event.imageUrl} alt={event.title} className="event-image" />
+  return (
+    <div className="event-details-container">
+      {event.imageUrl && (
+        <img src={event.imageUrl} alt={event.title} className="event-image" />
+      )}
+      <h2 className="event-title">{event.title}</h2>
+      <p className="event-location">{event.location}</p>
+      <hr className="my-4" />
+      <p className="event-description">{event.description}</p>
+      <hr className="my-4" />
+      <p className="event-datetime">
+        Start: {event.startDateTime.toDate().toString()} <br />
+        End: {event.endDateTime.toDate().toString()}
+      </p>
+      <p className="event-price">Price: £{event.price}</p>
+
+      <div className="button-container flex">
+        {isRegistered && (
+          <button
+            onClick={addToGoogleCalendar}
+            className="button button-primary"
+          >
+            Add to Google Calendar
+          </button>
         )}
-        <h2 className="event-title">{event.title}</h2>
-        <p className="event-location">{event.location}</p>
-        <hr className="my-4" />
-        <p className="event-description">{event.description}</p>
-        <hr className="my-4" />
-        <p className="event-datetime">
-          Start: {event.startDateTime.toDate().toString()} <br />
-          End: {event.endDateTime.toDate().toString()}
-        </p>
-        <p className="event-price">Price: £{event.price}</p>
 
         {role === "staff" && (
           <div className="staff-actions mb-4">
             <p className="registration-count">
               Guests Registered: {registrationCount}
             </p>
-            <div className="button-container flex">
-              {" "}
-              <button
-                onClick={() => navigate(`/events/${id}/edit`)}
-                className="button button-primary mr-2"
-              >
-                Edit Event
-              </button>
-              <button
-                onClick={handleDeleteEvent}
-                disabled={deleting}
-                className={`button button-danger ${
-                  deleting ? "button-disabled" : ""
-                }`}
-              >
-                {deleting ? "Deleting..." : "Delete Event"}
-              </button>
-            </div>
+            <button
+              onClick={() => navigate(`/events/${id}/edit`)}
+              className="button button-primary mr-2"
+            >
+              Edit Event
+            </button>
+            <button
+              onClick={handleDeleteEvent}
+              disabled={deleting}
+              className={`button button-danger ${
+                deleting ? "button-disabled" : ""
+              }`}
+            >
+              {deleting ? "Deleting..." : "Delete Event"}
+            </button>
           </div>
         )}
 
@@ -187,7 +217,8 @@ const EventDetails = () => {
           </p>
         )}
       </div>
-    );
-  };
+    </div>
+  );
+};
 
   export default EventDetails;

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth, db, provider } from "../firebase";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import googleLogo from "../assets/google-icon.svg";
 
@@ -14,6 +14,15 @@ const Login = () => {
     google: false,
   });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigate("/events");
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -69,15 +78,21 @@ const Login = () => {
       const user = result.user;
 
       const userDoc = await getDoc(doc(db, "Users", user.uid));
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const userRole = userData.role;
+      if (!userDoc.exists()) {
 
-        if (userRole === "staff") {
-          navigate("/create-event");
-        } else {
-          navigate("/events");
-        }
+        await setDoc(doc(db, "Users", user.uid), {
+          email: user.email,
+          fullName: user.displayName,
+          eventsRegistered: [],
+          role: "user",
+        });
+      }
+
+      const userData = await getDoc(doc(db, "Users", user.uid));
+      const userRole = userData.data().role;
+
+      if (userRole === "staff") {
+        navigate("/create-event");
       } else {
         navigate("/events");
       }
@@ -89,57 +104,58 @@ const Login = () => {
     }
   };
 
- return (
-   <div className="flex items-center justify-center min-h-screen bg-gray-100">
-     <div className="form-container">
-       <h5 className="text-center text-xl font-bold mb-6">Login</h5>
-       <form onSubmit={handleLogin}>
-         <div className="mb-4">
-           <label className="form-label">Email:</label>
-           <input
-             type="email"
-             value={email}
-             onChange={(e) => setEmail(e.target.value)}
-             required
-             className="form-input"
-           />
-         </div>
-         <div className="mb-4">
-           <label className="form-label">Password:</label>
-           <input
-             type="password"
-             value={password}
-             onChange={(e) => setPassword(e.target.value)}
-             required
-             className="form-input"
-           />
-         </div>
-         <button
-           type="submit"
-           disabled={loading.emailPassword}
-           className={`button ${
-             loading.emailPassword ? "button-disabled" : "button-primary"
-           }`}
-         >
-           {loading.emailPassword ? "Logging In..." : "Log In"}
-         </button>
-         <div className="flex justify-center mt-4">
-           <button
-             type="button"
-             onClick={handleGoogleLogin}
-             disabled={loading.google}
-             className={`flex items-center justify-center border border-gray-300 rounded-full p-2 mt-4 ${
-               loading.google ? "button-disabled" : ""
-             }`}
-           >
-             <img src={googleLogo} alt="Google Logo" className="w-8 h-8" />
-           </button>
-         </div>
-         {error && <p className="error-message">{error}</p>}
-       </form>
-     </div>
-   </div>
- );
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="form-container">
+        <h5 className="text-center text-xl font-bold mb-6">Login</h5>
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <label className="form-label">Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="form-input"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="form-label">Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="form-input"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading.emailPassword}
+            className={`button ${
+              loading.emailPassword ? "button-disabled" : "button-primary"
+            }`}
+          >
+            {loading.emailPassword ? "Logging In..." : "Log In"}
+          </button>
+          <div className="flex justify-center mt-4">
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              disabled={loading.google}
+              className={`flex items-center justify-center border border-gray-300 rounded-full p-2 mt-4 ${
+                loading.google ? "button-disabled" : ""
+              }`}
+            >
+              <img src={googleLogo} alt="Google Logo" className="w-8 h-8" />
+            </button>
+          </div>
+          {error && <p className="error-message">{error}</p>}
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default Login;

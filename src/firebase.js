@@ -18,5 +18,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const provider = new GoogleAuthProvider();
+provider.addScope("https://www.googleapis.com/auth/calendar");
 
 export { app, auth, db, storage, provider };
