@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
 import { AuthContext } from "../context/AuthContext";
+import GoogleCalendarIcon from "../assets/google-cal-icon.svg"
 
 const MyEvents = () => {
   const { user } = useContext(AuthContext);
@@ -97,6 +98,27 @@ const MyEvents = () => {
     navigate(`/events/${eventId}`);
   };
 
+  const addToGoogleCalendar = (event) => {
+    const { title, description, location, startDateTime, endDateTime } = event;
+
+    const start = startDateTime
+      .toDate()
+      .toISOString()
+      .replace(/-|:|\.|Z/g, "");
+    const end = endDateTime
+      .toDate()
+      .toISOString()
+      .replace(/-|:|\.|Z/g, "");
+
+    const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+      title
+    )}&details=${encodeURIComponent(description)}&location=${encodeURIComponent(
+      location
+    )}&dates=${start}/${end}`;
+
+    window.open(calendarUrl, "_blank");
+  };
+
   if (loading) {
     return (
       <div className="loading-text">Loading your registered events...</div>
@@ -112,39 +134,51 @@ const MyEvents = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 md:p-8 lg:p-12">
-      <h2 className="text-3xl font-bold mb-6">Upcoming Events</h2>
-      <ul className="space-y-6">
-        {registeredEvents.map((event) => (
-          <li key={event.id} className="border rounded-lg p-4 shadow-md">
-            <div
-              onClick={() => handleEventClick(event.id)}
-              className="cursor-pointer"
+  <div className="container mx-auto p-4 md:p-8 lg:p-12">
+    <h2 className="text-3xl font-bold mb-6">Upcoming Events</h2>
+    <ul className="space-y-6">
+      {registeredEvents.map((event) => (
+        <li key={event.id} className="border rounded-lg p-4 shadow-md">
+          <div
+            onClick={() => handleEventClick(event.id)}
+            className="cursor-pointer"
+          >
+            {event.imageUrl && (
+              <img
+                src={event.imageUrl}
+                alt={event.title}
+                className="w-full rounded-lg mb-4"
+              />
+            )}
+            <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
+            <p className="text-gray-700 text-md mb-2">{event.description}</p>
+            <p className="text-gray-600 text-md mb-2">{event.location}</p>
+            <p className="text-gray-600 text-md mb-2">
+              Start: {event.startDateTime.toDate().toString()}
+            </p>
+            <p className="text-gray-600 text-md mb-2">
+              End: {event.endDateTime.toDate().toString()}
+            </p>
+            <p className="text-gray-600 text-md mb-4">
+              Price: £{event.price}
+            </p>
+          </div>
+          <div className="button-container flex flex-col">
+            <button
+              onClick={() => addToGoogleCalendar(event)}
+              className="button button-primary flex items-center w-full mb-2"
             >
-              {event.imageUrl && (
-                <img
-                  src={event.imageUrl}
-                  alt={event.title}
-                  className="w-full rounded-lg mb-4"
-                />
-              )}
-              <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-              <p className="text-gray-700 text-md mb-2">{event.description}</p>
-              <p className="text-gray-600 text-md mb-2">{event.location}</p>
-              <p className="text-gray-600 text-md mb-2">
-                Start: {event.startDateTime.toDate().toString()}
-              </p>
-              <p className="text-gray-600 text-md mb-2">
-                End: {event.endDateTime.toDate().toString()}
-              </p>
-              <p className="text-gray-600 text-md mb-4">
-                Price: £{event.price}
-              </p>
-            </div>
+              <img
+                src={GoogleCalendarIcon}
+                alt="Google Calendar Icon"
+                className="w-5 h-5 inline-block mr-2"
+              />
+              Add to Google Calendar
+            </button>
             <button
               onClick={() => handleCancellation(event.id)}
               disabled={cancelEventId === event.id}
-              className={`button button-danger ${
+              className={`button button-danger w-full ${
                 cancelEventId === event.id
                   ? "opacity-50 cursor-not-allowed"
                   : ""
@@ -154,12 +188,12 @@ const MyEvents = () => {
                 ? "Cancelling..."
                 : "Cancel Registration"}
             </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+);
 };
-
 
 export default MyEvents;
