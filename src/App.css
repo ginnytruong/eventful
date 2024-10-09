@@ -114,8 +114,13 @@ body {
   background-color: #E02000;
 }
 
+.registration-info {
+  margin-top: 1rem;
+}
+
 .success-message {
   margin-top: 1rem;
+  margin-bottom: 1rem;
   font-weight: bold;
   color: black;
 }

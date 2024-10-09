@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc, collection, addDoc, query, where, getDocs, updateDoc, arrayUnion, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { AuthContext } from "../context/AuthContext";
+import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
 
 const EventDetails = () => {
   const { id } = useParams();
@@ -166,16 +167,7 @@ const EventDetails = () => {
       </p>
       <p className="event-price">Price: £{event.price}</p>
 
-      <div className="button-container flex">
-        {isRegistered && (
-          <button
-            onClick={addToGoogleCalendar}
-            className="button button-primary"
-          >
-            Add to Google Calendar
-          </button>
-        )}
-
+      <div className="button-container">
         {role === "staff" && (
           <div className="staff-actions mb-4">
             <p className="registration-count">
@@ -212,9 +204,22 @@ const EventDetails = () => {
         )}
 
         {isRegistered && (
-          <p className="success-message">
-            You have successfully registered for this event!
-          </p>
+          <div className="registration-info">
+            <p className="success-message">
+              You have registered for this event!
+            </p>
+            <button
+              onClick={addToGoogleCalendar}
+              className="button button-primary flex items-center"
+            >
+              <img
+                src={GoogleCalendarIcon}
+                alt="Google Calendar Icon"
+                className="w-5 h-5 inline-block mr-2"
+              />
+              Add to Google Calendar
+            </button>
+          </div>
         )}
       </div>
     </div>
