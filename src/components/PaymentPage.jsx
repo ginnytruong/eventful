@@ -147,7 +147,8 @@ const PaymentPage = () => {
           });
         }}
         onApprove={async (data, actions) => {
-          await actions.order.capture().then(handlePaymentSuccess);
+          const details = await actions.order.capture(); 
+          await handlePaymentSuccess(details);
         }}
         onError={handlePaymentError}
       />
