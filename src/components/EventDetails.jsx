@@ -90,7 +90,6 @@ const EventDetails = () => {
       });
 
       setIsRegistered(true);
-      alert("Registered successfully for the free event!");
       }
     } catch (error) {
       console.error("Error registering for event:", error);
