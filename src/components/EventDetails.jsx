@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc, collection, addDoc, query, where, getDocs, updateDoc, arrayUnion, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { AuthContext } from "../context/AuthContext";
-import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
+import GoogleCalendarIcon from "../assets/google-cal-icon.svg"
 
 const EventDetails = () => {
   const { id } = useParams();
@@ -72,11 +72,16 @@ const EventDetails = () => {
         return;
       }
 
+      if (event.price > 0) {
+        navigate("/payment/" + id, { state: { price: event.price } });
+      } else {
+
       await addDoc(collection(db, "Registrations"), {
         eventId: id,
         userId: user.uid,
         eventTitle: event.title,
         registrationDate: new Date(),
+        paymentStatus: "completed",
       });
 
       const userDocRef = doc(db, "Users", user.uid);
@@ -85,6 +90,8 @@ const EventDetails = () => {
       });
 
       setIsRegistered(true);
+      alert("Registered successfully for the free event!");
+      }
     } catch (error) {
       console.error("Error registering for event:", error);
       alert(
@@ -158,13 +165,13 @@ const EventDetails = () => {
       )}
       <h2 className="event-title">{event.title}</h2>
       <p className="event-location">{event.location}</p>
-      <hr className="my-4" />
-      <p className="event-description">{event.description}</p>
-      <hr className="my-4" />
       <p className="event-datetime">
         Start: {event.startDateTime.toDate().toString()} <br />
         End: {event.endDateTime.toDate().toString()}
       </p>
+      <hr className="my-4" />
+      <p className="event-description">{event.description}</p>
+      <hr className="my-4" />
       <p className="event-price">Price: £{event.price}</p>
 
       <div className="button-container">

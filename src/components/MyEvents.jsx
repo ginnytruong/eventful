@@ -134,66 +134,61 @@ const MyEvents = () => {
   }
 
   return (
-  <div className="container mx-auto p-4 md:p-8 lg:p-12">
-    <h2 className="text-3xl font-bold mb-6">Upcoming Events</h2>
-    <ul className="space-y-6">
-      {registeredEvents.map((event) => (
-        <li key={event.id} className="border rounded-lg p-4 shadow-md">
-          <div
-            onClick={() => handleEventClick(event.id)}
-            className="cursor-pointer"
-          >
-            {event.imageUrl && (
-              <img
-                src={event.imageUrl}
-                alt={event.title}
-                className="w-full rounded-lg mb-4"
-              />
-            )}
-            <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-            <p className="text-gray-700 text-md mb-2">{event.description}</p>
-            <p className="text-gray-600 text-md mb-2">{event.location}</p>
-            <p className="text-gray-600 text-md mb-2">
-              Start: {event.startDateTime.toDate().toString()}
-            </p>
-            <p className="text-gray-600 text-md mb-2">
-              End: {event.endDateTime.toDate().toString()}
-            </p>
-            <p className="text-gray-600 text-md mb-4">
-              Price: £{event.price}
-            </p>
-          </div>
-          <div className="button-container flex flex-col">
-            <button
-              onClick={() => addToGoogleCalendar(event)}
-              className="button button-primary flex items-center w-full mb-2"
+    <div className="container mx-auto p-4 md:p-8 lg:p-12">
+      <h2 className="text-3xl font-bold mb-6">Upcoming Events</h2>
+      <ul className="space-y-6">
+        {registeredEvents.map((event) => (
+          <li key={event.id} className="border rounded-lg p-4 shadow-md">
+            <div
+              onClick={() => handleEventClick(event.id)}
+              className="cursor-pointer"
             >
-              <img
-                src={GoogleCalendarIcon}
-                alt="Google Calendar Icon"
-                className="w-5 h-5 inline-block mr-2"
-              />
-              Add to Google Calendar
-            </button>
-            <button
-              onClick={() => handleCancellation(event.id)}
-              disabled={cancelEventId === event.id}
-              className={`button button-danger w-full ${
-                cancelEventId === event.id
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-            >
-              {cancelEventId === event.id
-                ? "Cancelling..."
-                : "Cancel Registration"}
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+              {event.imageUrl && (
+                <img
+                  src={event.imageUrl}
+                  alt={event.title}
+                  className="w-full rounded-lg mb-4"
+                />
+              )}
+              <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
+              <p className="event-location">{event.location}</p>
+              <p className="event-datetime">
+                Start: {event.startDateTime.toDate().toString()} <br />
+                End: {event.endDateTime.toDate().toString()}
+              </p>
+              <p className="event-price">Price: £{event.price}</p>
+            </div>
+            <div className="button-container flex flex-col">
+              <button
+                onClick={() => addToGoogleCalendar(event)}
+                className="button button-primary flex items-center w-full mb-2"
+              >
+                <img
+                  src={GoogleCalendarIcon}
+                  alt="Google Calendar Icon"
+                  className="w-5 h-5 inline-block mr-2"
+                />
+                Add to Google Calendar
+              </button>
+              <button
+                onClick={() => handleCancellation(event.id)}
+                disabled={cancelEventId === event.id}
+                className={`button button-danger w-full ${
+                  cancelEventId === event.id
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+              >
+                {cancelEventId === event.id
+                  ? "Cancelling..."
+                  : "Cancel Registration"}
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 export default MyEvents;

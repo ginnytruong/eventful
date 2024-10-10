@@ -70,6 +70,12 @@ body {
   margin-bottom: 1rem;
 }
 
+.event-datetime {
+  color: #4a4a4a;
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+}
+
 .event-image {
   width: 100%;
   border-radius: 0.5rem;
@@ -77,11 +83,10 @@ body {
 }
 
 .event-description, 
-.event-location, 
-.event-date, 
+.event-location,
 .event-price {
   color: #4a4a4a;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .staff-actions {
@@ -125,9 +130,18 @@ body {
   color: black;
 }
 
+.payment-page-container {
+  @apply max-w-xl mx-auto p-4; /* max width and center align */
+}
+
+.event-details {
+  @apply text-center; /* center text for event details */
+}
+
 hr {
   border: 0;
   height: 1px;
   background: #ccc;
   margin: 1.5rem 0;
 }
+
