@@ -54,21 +54,23 @@ const EventList = () => {
 
   return (
     <div className="flex flex-col items-center mx-5 my-5">
-      <input
-        type="text"
-        placeholder="Search events..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="mb-4 p-2 border rounded"
-      />
-      <select
-        value={sortBy}
-        onChange={(e) => setSortBy(e.target.value)}
-        className="mb-4 p-2 border rounded"
-      >
-        <option value="date">Sort by Date</option>
-        <option value="title">Sort by Title</option>
-      </select>
+      <div className="search-sort-container">
+        <input
+          type="text"
+          placeholder="Search events..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-bar"
+        />
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="sort-dropdown"
+        >
+          <option value="date">Sort by Date</option>
+          <option value="title">Sort by Title</option>
+        </select>
+      </div>
       <div className="flex flex-wrap justify-center">
         {sortedEvents.map((event) => (
           <div
