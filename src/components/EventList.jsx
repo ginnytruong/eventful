@@ -10,28 +10,36 @@ const EventList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("date");
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "Events"));
-        const eventsData = querySnapshot.docs.map((doc) => ({
+useEffect(() => {
+  const fetchEvents = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "Events"));
+
+      const eventsData = querySnapshot.docs.map((doc) => {
+
+        const startDateTime = doc.data().startDateTime;
+        const endDateTime = doc.data().endDateTime;
+
+        return {
           id: doc.id,
           ...doc.data(),
-          startDateTime: doc.data().startDateTime.toDate(),
-          endDateTime: doc.data().endDateTime.toDate(),
-        }));
+          startDateTime: startDateTime?.toDate(),
+          endDateTime: endDateTime?.toDate(),
+        };
+      });
 
-        setEvents(eventsData);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-        setError("Failed to load events. Please try again.");
-      } finally {
-        setLoading(false);
-      }
-    };
+      setEvents(eventsData);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      setError("Failed to load events. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchEvents();
-  }, []);
+  fetchEvents();
+}, []);
+
 
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
