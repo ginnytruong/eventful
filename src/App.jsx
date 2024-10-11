@@ -14,26 +14,10 @@ import { AuthProvider } from "./context/AuthContext";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const App = () => {
-  // const [clientId, setClientId] = useState("");
-
-  // useEffect(() => {
-  //   fetch("/client_id.json")
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setClientId(data.web.client_id);
-  //     })
-  //     .catch((err) => console.error("Error loading client_id.json:", err));
-  // }, []);
-
-  // if (!clientId) {
-  //   return <div className="loading-text">Loading...</div>;
-  // }
-
   const [googleClientId, setGoogleClientId] = useState("");
   const [paypalClientId, setPaypalClientId] = useState("");
 
   useEffect(() => {
-    // Load Google Client ID from client_id.json
     fetch("/client_id.json")
       .then((response) => response.json())
       .then((data) => {
@@ -43,7 +27,6 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    // Load PayPal Client ID from environment variables
     const id = import.meta.env.VITE_PAYPAL_CLIENT_ID;
     setPaypalClientId(id);
   }, []);

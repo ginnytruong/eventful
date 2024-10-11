@@ -10,8 +10,8 @@ const CreateEvent = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [startDateTime, setStartDateTime] = useState(""); // Renamed
-  const [endDateTime, setEndDateTime] = useState(""); // Renamed
+  const [startDateTime, setStartDateTime] = useState("");
+  const [endDateTime, setEndDateTime] = useState("");
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -49,8 +49,8 @@ const CreateEvent = () => {
       await addDoc(collection(db, "Events"), {
         title,
         description,
-        startDateTime: new Date(startDateTime), // Use start date
-        endDateTime: new Date(endDateTime), // Use end date
+        startDateTime: new Date(startDateTime),
+        endDateTime: new Date(endDateTime),
         price: parseFloat(price),
         location,
         creatorID: user.uid,

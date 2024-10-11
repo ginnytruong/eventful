@@ -77,8 +77,8 @@ const EditEvent = () => {
         imageUrl,
         description,
         location,
-        startDateTime: new Date(startDateTime), // Update start date
-        endDateTime: new Date(endDateTime), // Update end date
+        startDateTime: new Date(startDateTime),
+        endDateTime: new Date(endDateTime),
         price: parseFloat(price),
       });
 

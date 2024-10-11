@@ -131,11 +131,11 @@ body {
 }
 
 .payment-page-container {
-  @apply max-w-xl mx-auto p-4; /* max width and center align */
+  @apply max-w-xl mx-auto p-4;
 }
 
 .event-details {
-  @apply text-center; /* center text for event details */
+  @apply text-center;
 }
 
 hr {
