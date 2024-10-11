@@ -13,7 +13,7 @@ const EditEvent = () => {
   const [image, setImage] = useState(null);
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [startDateTime, setStartDateTime] = useState(""); // New state for start date and time
+  const [startDateTime, setStartDateTime] = useState(""); 
   const [endDateTime, setEndDateTime] = useState("");
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(true);
@@ -39,8 +39,8 @@ const EditEvent = () => {
           setTitle(eventData.title);
           setDescription(eventData.description);
           setLocation(eventData.location);
-          setStartDateTime(eventStartDateTime.toISOString().slice(0, 16)); // Start Date
-          setEndDateTime(eventEndDateTime.toISOString().slice(0, 16)); // End Date
+          setStartDateTime(eventStartDateTime.toISOString().slice(0, 16));
+          setEndDateTime(eventEndDateTime.toISOString().slice(0, 16));
           setPrice(eventData.price);
         }
       } catch (error) {
