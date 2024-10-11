@@ -106,6 +106,7 @@ body {
 .button {
   display: inline-block;
   padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
   font-weight: bold;
   border-radius: 0.5rem;
   transition: background-color 0.2s;
