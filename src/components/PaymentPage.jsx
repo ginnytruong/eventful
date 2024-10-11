@@ -76,12 +76,10 @@ const PaymentPage = () => {
           registrationDate: new Date(),
           paymentStatus: "completed",
         });
-
         const userDocRef = doc(db, "Users", user.uid);
         await updateDoc(userDocRef, {
           eventsRegistered: arrayUnion(id),
         });
-
         alert("Payment successful! You are now registered for the event.");
         navigate(`/events/${id}`);
       } else {
@@ -147,7 +145,7 @@ const PaymentPage = () => {
           });
         }}
         onApprove={async (data, actions) => {
-          const details = await actions.order.capture(); 
+          const details = await actions.order.capture();
           await handlePaymentSuccess(details);
         }}
         onError={handlePaymentError}
@@ -157,6 +155,5 @@ const PaymentPage = () => {
     </div>
   );
 };
-
 
 export default PaymentPage;
