@@ -56,6 +56,9 @@ const CreateEvent = () => {
         creatorID: user.uid,
         imageUrl,
       });
+      const docRef = await addDoc(collection(db, "Events"), eventData);
+      await updateDoc(docRef, { id: docRef.id });
+
       navigate("/events");
     } catch (error) {
       console.error("Error creating event:", error);
@@ -68,7 +71,7 @@ const CreateEvent = () => {
   const isButtonDisabled = () => {
     const isPriceValid = price >= 0;
     const isStartDateValid = new Date(startDateTime) > new Date();
-    const isEndDateValid = new Date(endDateTime) > new Date(startDateTime); // Ensure end is after start
+    const isEndDateValid = new Date(endDateTime) > new Date(startDateTime);
     return (
       !title ||
       !description ||

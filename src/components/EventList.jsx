@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
@@ -19,12 +18,10 @@ const EventList = () => {
           id: doc.id,
           ...doc.data(),
           startDateTime: doc.data().startDateTime.toDate(),
-          endDateTime: doc.data().endDateTime.toDate()
+          endDateTime: doc.data().endDateTime.toDate(),
         }));
 
-        const ticketmasterEvents = await fetchTicketmasterEvents();
-
-        setEvents([...eventsData, ...ticketmasterEvents]);
+        setEvents(eventsData);
       } catch (error) {
         console.error("Error fetching events:", error);
         setError("Failed to load events. Please try again.");
@@ -35,50 +32,6 @@ const EventList = () => {
 
     fetchEvents();
   }, []);
-
-const fetchTicketmasterEvents = async () => {
-  try {
-    const response = await axios.get(
-      `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${
-        import.meta.env.VITE_TICKETMASTER_API_KEY
-      }`
-    );
-
-    if (!response.data._embedded || !response.data._embedded.events) {
-      return [];
-    }
-
-    return response.data._embedded.events
-      .map((event) => {
-        if (
-          !event.dates ||
-          !event.dates.start ||
-          !event._embedded ||
-          !event._embedded.venues ||
-          event._embedded.venues.length === 0
-        ) {
-          console.warn("Event data is missing properties:", event);
-          return null;
-        }
-
-        return {
-          id: event.id,
-          title: event.name,
-          location: event._embedded.venues[0].name,
-          startDateTime: new Date(
-            event.dates.start.localDate + "T" + event.dates.start.localTime
-          ),
-          endDateTime: null,
-          imageUrl: event.images[0]?.url,
-          url: event.url,
-        };
-      })
-      .filter((event) => event !== null);
-  } catch (error) {
-    console.error("Error fetching Ticketmaster events:", error);
-    return [];
-  }
-};
 
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -140,7 +93,8 @@ const fetchTicketmasterEvents = async () => {
                 Start: {event.startDateTime.toLocaleString()}{" "}
               </p>
               <p className="font-poppins text-sm text-gray-600">
-                End: {event.endDateTime ? event.endDateTime.toLocaleString() : "N/A"}{" "}
+                End:{" "}
+                {event.endDateTime ? event.endDateTime.toLocaleString() : "N/A"}{" "}
               </p>
             </Link>
           </div>

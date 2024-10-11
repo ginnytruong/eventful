@@ -1,9 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { doc, getDoc, collection, addDoc, query, where, getDocs, updateDoc, arrayUnion, deleteDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  arrayUnion,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { AuthContext } from "../context/AuthContext";
-import GoogleCalendarIcon from "../assets/google-cal-icon.svg"
+import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
 
 const EventDetails = () => {
   const { id } = useParams();
@@ -17,48 +28,57 @@ const EventDetails = () => {
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    const fetchEvent = async () => {
-      try {
-        const eventDoc = await getDoc(doc(db, "Events", id));
-        if (eventDoc.exists()) {
-          const eventData = eventDoc.data();
-          setEvent(eventData);
-        }
-      } catch (error) {
-        console.error("Error fetching event:", error);
-      } finally {
-        setLoading(false);
+    const initialize = async () => {
+      setLoading(true);
+      await fetchEvent();
+      await checkRegistration();
+      if (role === "staff") {
+        await fetchRegistrationCount();
       }
+      setLoading(false);
     };
+    initialize();
+  }, [id, user, role]);
 
-    const checkRegistration = async () => {
-      if (user) {
-        const q = query(
-          collection(db, "Registrations"),
-          where("eventId", "==", id),
-          where("userId", "==", user.uid)
-        );
-        const querySnapshot = await getDocs(q);
-        setIsRegistered(!querySnapshot.empty);
+  const fetchEvent = async () => {
+    try {
+      const eventDoc = await getDoc(doc(db, "Events", id));
+      if (eventDoc.exists()) {
+        const eventData = eventDoc.data();
+        const startDateTime = eventData.startDateTime.toDate();
+        const endDateTime = eventData.endDateTime
+          ? eventData.endDateTime.toDate()
+          : null;
+        setEvent({ ...eventData, startDateTime, endDateTime });
+      } else {
+        console.warn("Event not found in Firebase.");
+        setEvent(null);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching event:", error);
+    }
+  };
 
-    const fetchRegistrationCount = async () => {
+  const checkRegistration = async () => {
+    if (user && event) {
       const q = query(
         collection(db, "Registrations"),
-        where("eventId", "==", id)
+        where("eventId", "==", id),
+        where("userId", "==", user.uid)
       );
       const querySnapshot = await getDocs(q);
-      setRegistrationCount(querySnapshot.size);
-    };
-
-    fetchEvent();
-    checkRegistration();
-
-    if (role === "staff") {
-      fetchRegistrationCount();
+      setIsRegistered(!querySnapshot.empty);
     }
-  }, [id, user, role]);
+  };
+
+  const fetchRegistrationCount = async () => {
+    const q = query(
+      collection(db, "Registrations"),
+      where("eventId", "==", id)
+    );
+    const querySnapshot = await getDocs(q);
+    setRegistrationCount(querySnapshot.size);
+  };
 
   const handleRegistration = async () => {
     if (!user) {
@@ -67,6 +87,7 @@ const EventDetails = () => {
     }
     try {
       setRegistering(true);
+
       if (isRegistered) {
         setRegistering(false);
         return;
@@ -75,21 +96,20 @@ const EventDetails = () => {
       if (event.price > 0) {
         navigate("/payment/" + id, { state: { price: event.price } });
       } else {
+        await addDoc(collection(db, "Registrations"), {
+          eventId: id,
+          userId: user.uid,
+          eventTitle: event.title,
+          registrationDate: new Date(),
+          paymentStatus: "completed",
+        });
 
-      await addDoc(collection(db, "Registrations"), {
-        eventId: id,
-        userId: user.uid,
-        eventTitle: event.title,
-        registrationDate: new Date(),
-        paymentStatus: "completed",
-      });
+        const userDocRef = doc(db, "Users", user.uid);
+        await updateDoc(userDocRef, {
+          eventsRegistered: arrayUnion(id),
+        });
 
-      const userDocRef = doc(db, "Users", user.uid);
-      await updateDoc(userDocRef, {
-        eventsRegistered: arrayUnion(id),
-      });
-
-      setIsRegistered(true);
+        setIsRegistered(true);
       }
     } catch (error) {
       console.error("Error registering for event:", error);
@@ -132,14 +152,10 @@ const EventDetails = () => {
 
     const { title, description, location, startDateTime, endDateTime } = event;
 
-    const start = startDateTime
-      .toDate()
-      .toISOString()
-      .replace(/-|:|\.|Z/g, "");
+    const start = startDateTime.toISOString().replace(/-|:|\.|Z/g, "");
     const end = endDateTime
-      .toDate()
-      .toISOString()
-      .replace(/-|:|\.|Z/g, "");
+      ? endDateTime.toISOString().replace(/-|:|\.|Z/g, "")
+      : start;
 
     const calendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
       title
@@ -165,8 +181,8 @@ const EventDetails = () => {
       <h2 className="event-title">{event.title}</h2>
       <p className="event-location">{event.location}</p>
       <p className="event-datetime">
-        Start: {event.startDateTime.toDate().toString()} <br />
-        End: {event.endDateTime.toDate().toString()}
+        Start: {event.startDateTime.toLocaleString()} <br />
+        End: {event.endDateTime ? event.endDateTime.toLocaleString() : "N/A"}
       </p>
       <hr className="my-4" />
       <p className="event-description">{event.description}</p>
@@ -232,4 +248,4 @@ const EventDetails = () => {
   );
 };
 
-  export default EventDetails;
+export default EventDetails;
