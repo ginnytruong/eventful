@@ -10,8 +10,37 @@ const CreateAccount = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState("");
+  const [passwordMatch, setPasswordMatch] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleInputChange = (e, setState) => {
+    setState(e.target.value);
+    setError("");
+  };
+
+  const checkPasswordStrength = (password) => {
+    const strongPasswordPattern =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).{6,}$/;
+    if (strongPasswordPattern.test(password)) {
+      setPasswordStrength("Strong password");
+    } else {
+      setPasswordStrength(
+        "Password must be at least 6 characters long and contain uppercase, lowercase, number, and special character."
+      );
+    }
+  };
+
+  const checkPasswordMatch = (password, confirmPassword) => {
+    if (confirmPassword === "") {
+      setPasswordMatch("");
+    } else if (password === confirmPassword) {
+      setPasswordMatch("Passwords match");
+    } else {
+      setPasswordMatch("Passwords do not match");
+    }
+  };
 
   const handleCreateAccount = async (e) => {
     e.preventDefault();
@@ -78,9 +107,9 @@ const CreateAccount = () => {
             <input
               type="text"
               value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              onChange={(e) => handleInputChange(e, setFullName)}
               required
-              className="form-input"
+              className={`form-input ${error ? "border-red-500" : ""}`}
             />
           </div>
           <div className="mb-4">
@@ -88,9 +117,9 @@ const CreateAccount = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => handleInputChange(e, setEmail)}
               required
-              className="form-input"
+              className={`form-input ${error ? "border-red-500" : ""}`}
             />
           </div>
           <div className="mb-4">
@@ -98,20 +127,53 @@ const CreateAccount = () => {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                handleInputChange(e, setPassword);
+                checkPasswordStrength(e.target.value);
+                checkPasswordMatch(e.target.value, confirmPassword);
+              }}
               required
-              className="form-input"
+              className={`form-input ${
+                passwordStrength === "Strong password"
+                  ? "border-green-500"
+                  : "border-red-500"
+              }`}
             />
+            <small
+              className={`${
+                passwordStrength === "Strong password"
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {passwordStrength}
+            </small>{" "}
           </div>
           <div className="mb-4">
             <label className="form-label">Confirm Password:</label>
             <input
               type="password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {
+                handleInputChange(e, setConfirmPassword);
+                checkPasswordMatch(password, e.target.value);
+              }}
               required
-              className="form-input"
+              className={`form-input ${
+                passwordMatch === "Passwords do not match"
+                  ? "border-red-500"
+                  : "border-green-500"
+              }`}
             />
+            <small
+              className={`${
+                passwordMatch === "Passwords match"
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
+              {passwordMatch}
+            </small>{" "}
           </div>
           <button
             type="submit"
@@ -122,7 +184,7 @@ const CreateAccount = () => {
           >
             {loading ? "Signing Up..." : "Sign Up"}
           </button>
-          {error && <p className="error-message">{error}</p>}
+          {error && <p className="error-message text-red-600 mt-4">{error}</p>}{" "}
         </form>
       </div>
     </div>

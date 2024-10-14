@@ -160,3 +160,7 @@ hr {
   @apply border-red-500;
   border-color: #FF4C4F;
 }
+
+.strong-password-message {
+  @apply text-green-500;
+}
