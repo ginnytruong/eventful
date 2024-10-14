@@ -24,15 +24,17 @@ const Login = () => {
     return () => unsubscribe();
   }, [navigate]);
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading({ ...loading, emailPassword: true });
+    setLoading((prev) => ({ ...prev, emailPassword: false }));
     setError("");
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
       setError("Invalid email format.");
-      setLoading({ ...loading, emailPassword: false });
+      setLoading((prev) => ({ ...prev, emailPassword: false }));
+      setError("");
       return;
     }
 
@@ -49,28 +51,22 @@ const Login = () => {
         const userData = userDoc.data();
         const userRole = userData.role;
 
-        if (userRole === "staff") {
-          navigate("/create-event");
-        } else {
-          navigate("/events");
-        }
+        navigate(userRole === "staff" ? "/create-event" : "/events");
       }
     } catch (error) {
       console.error("Login error:", error);
-      if (error.code === "auth/invalid-credential") {
-        setError(
-          "Incorrect email or password. Please try again or create an account."
-        );
-      } else {
-        setError("An error occurred. Please try again.");
-      }
+      setError(
+        error.code === "auth/invalid-credential"
+          ? "Incorrect email or password. Please try again or create an account."
+          : "An error occurred. Please try again."
+      );
     } finally {
-      setLoading({ ...loading, emailPassword: false });
+      setLoading((prev) => ({ ...prev, emailPassword: false }));
     }
   };
 
   const handleGoogleLogin = async () => {
-    setLoading({ ...loading, google: true });
+    setLoading((prev) => ({ ...prev, emailPassword: false }));
     setError("");
 
     try {
@@ -79,7 +75,6 @@ const Login = () => {
 
       const userDoc = await getDoc(doc(db, "Users", user.uid));
       if (!userDoc.exists()) {
-
         await setDoc(doc(db, "Users", user.uid), {
           email: user.email,
           fullName: user.displayName,
@@ -91,16 +86,12 @@ const Login = () => {
       const userData = await getDoc(doc(db, "Users", user.uid));
       const userRole = userData.data().role;
 
-      if (userRole === "staff") {
-        navigate("/create-event");
-      } else {
-        navigate("/events");
-      }
+      navigate(userRole === "staff" ? "/create-event" : "/events");
     } catch (error) {
       console.error("Google Login error:", error);
       setError("An error occurred during Google login. Please try again.");
     } finally {
-      setLoading({ ...loading, google: false });
+      setLoading((prev) => ({ ...prev, emailPassword: false }));
     }
   };
 
@@ -111,23 +102,31 @@ const Login = () => {
         <h5 className="text-center text-xl font-bold mb-6">Login</h5>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label className="form-label">Email:</label>
+            <label htmlFor="email" className="form-label">
+              Email:
+            </label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               className="form-input"
+              aria-label="Email input"
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Password:</label>
+            <label htmlFor="password" className="form-label">
+              Password:
+            </label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               className="form-input"
+              aria-label="Password input"
             />
           </div>
           <button
@@ -147,6 +146,7 @@ const Login = () => {
               className={`flex items-center justify-center border border-gray-300 rounded-full p-2 mt-4 ${
                 loading.google ? "button-disabled" : ""
               }`}
+              aria-label="Log in with Google"
             >
               <img src={googleLogo} alt="Google Logo" className="w-8 h-8" />
             </button>
