@@ -189,9 +189,9 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
           aria-label={`Image for ${event.title}`}
         />
       )}
-      <h2 className="event-title" tabIndex={0}>
+      <h4 className="event-title" tabIndex={0}>
         {event.title}
-      </h2>
+      </h4>
       <p className="event-location" tabIndex={0}>
         {event.location}
       </p>

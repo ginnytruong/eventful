@@ -21,7 +21,7 @@ const PaymentPage = () => {
   const { user } = useContext(AuthContext);
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const loadPayPalScript = () => {
@@ -32,7 +32,7 @@ const PaymentPage = () => {
       script.async = true;
       script.onerror = () => {
         console.error("Failed to load PayPal SDK script.");
-        setErrorMessage("Failed to load PayPal SDK script.");
+        setError("Failed to load PayPal SDK script.");
       };
       document.body.appendChild(script);
     };
@@ -45,11 +45,11 @@ const PaymentPage = () => {
         if (eventDoc.exists()) {
           setEvent(eventDoc.data());
         } else {
-          setErrorMessage("Event not found.");
+          setError("Event not found.");
         }
       } catch (error) {
         console.error("Error fetching event details:", error);
-        setErrorMessage("Error fetching event details.");
+        setError("Error fetching event details.");
       } finally {
         setLoading(false);
       }
@@ -80,14 +80,14 @@ const PaymentPage = () => {
         await updateDoc(userDocRef, {
           eventsRegistered: arrayUnion(id),
         });
-        alert("Payment successful! You are now registered for the event.");
+        setError("Payment successful! You are now registered for the event.");
         navigate(`/events/${id}`);
       } else {
-        alert("You are already registered for this event.");
+        setError("You are already registered for this event.");
       }
     } catch (error) {
       console.error("Error saving registration:", error);
-      setErrorMessage(
+      setError(
         "Payment successful but failed to save registration. Please contact support."
       );
     }
@@ -95,14 +95,14 @@ const PaymentPage = () => {
 
   const handlePaymentError = (error) => {
     console.error("Payment failed:", error);
-    setErrorMessage("Payment failed. Please try again.");
+    setError("Payment failed. Please try again.");
   };
 
   if (loading) {
     return <div className="loading-text">Loading payment details...</div>;
   }
-  if (errorMessage) {
-    return <div className="error-text">{errorMessage}</div>;
+  if (error) {
+    return <div className="error-text">{error}</div>;
   }
   if (!event) {
     return <div className="loading-text">Event not found.</div>;
@@ -110,7 +110,9 @@ const PaymentPage = () => {
 
   return (
     <div className="payment-page-container flex flex-col items-center justify-center">
-      <h2 className="text-2xl font-bold mb-4">Payment for {event.title}</h2>
+      <h7 className="text-2xl font-bold mb-4" aria-live="polite">
+        Payment for {event.title}
+      </h7>
 
       {event.imageUrl && (
         <img

@@ -123,12 +123,12 @@ const EditEvent = () => {
         role="form"
         aria-labelledby="edit-event-header"
       >
-        <h2
+        <h3
           id="edit-event-header"
           className="text-center text-xl font-bold mb-6"
         >
           Edit Event
-        </h2>
+        </h3>
         <form onSubmit={handleUpdateEvent}>
           <div className="mb-4">
             <label htmlFor="event-title" className="form-label">
