@@ -14,9 +14,7 @@ useEffect(() => {
   const fetchEvents = async () => {
     try {
       const querySnapshot = await getDocs(collection(db, "Events"));
-
       const eventsData = querySnapshot.docs.map((doc) => {
-
         const startDateTime = doc.data().startDateTime;
         const endDateTime = doc.data().endDateTime;
 
@@ -49,15 +47,34 @@ useEffect(() => {
     if (sortBy === "title") {
       return a.title.localeCompare(b.title);
     }
-    return a.startDateTime - b.startDateTime;
+    return (a.startDateTime || 0) - (b.startDateTime || 0);
   });
+
+  const handleRetry = () => {
+    setLoading(true);
+    setError(null);
+    fetchEvents();
+  };
 
   if (loading) {
     return <div className="loading-text">Loading events...</div>;
   }
 
   if (error) {
-    return <div className="error-message">{error}</div>;
+    return (
+      <div className="error-message">
+        {error}
+        <button onClick={handleRetry}>Retry</button>
+      </div>
+    );
+  }
+
+  if (filteredEvents.length === 0) {
+    return (
+      <div className="no-events-message">
+        No events found matching your criteria.
+      </div>
+    );
   }
 
   return (
