@@ -101,30 +101,44 @@ const CreateAccount = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="form-container">
         <h4 className="text-center text-xl font-bold mb-6">Create Account</h4>
-        <form onSubmit={handleCreateAccount}>
+        <form
+          onSubmit={handleCreateAccount}
+          aria-labelledby="create-account-form"
+        >
           <div className="mb-4">
-            <label className="form-label">Full Name:</label>
+            <label htmlFor="full-name" className="form-label">
+              Full Name:
+            </label>
             <input
+              id="full-name"
               type="text"
               value={fullName}
               onChange={(e) => handleInputChange(e, setFullName)}
               required
+              aria-required="true"
               className={`form-input ${error ? "border-red-500" : ""}`}
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Email:</label>
+            <label htmlFor="email" className="form-label">
+              Email:
+            </label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => handleInputChange(e, setEmail)}
               required
+              aria-required="true"
               className={`form-input ${error ? "border-red-500" : ""}`}
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Password:</label>
+            <label htmlFor="password" className="form-label">
+              Password:
+            </label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => {
@@ -133,6 +147,7 @@ const CreateAccount = () => {
                 checkPasswordMatch(e.target.value, confirmPassword);
               }}
               required
+              aria-required="true"
               className={`form-input ${
                 passwordStrength === "Strong password"
                   ? "border-green-500"
@@ -150,8 +165,11 @@ const CreateAccount = () => {
             </small>{" "}
           </div>
           <div className="mb-4">
-            <label className="form-label">Confirm Password:</label>
+            <label htmlFor="confirm-password" className="form-label">
+              Confirm Password:
+            </label>
             <input
+              id="confirm-password"
               type="password"
               value={confirmPassword}
               onChange={(e) => {
@@ -159,6 +177,7 @@ const CreateAccount = () => {
                 checkPasswordMatch(password, e.target.value);
               }}
               required
+              aria-required="true"
               className={`form-input ${
                 passwordMatch === "Passwords do not match"
                   ? "border-red-500"
@@ -184,7 +203,11 @@ const CreateAccount = () => {
           >
             {loading ? "Signing Up..." : "Sign Up"}
           </button>
-          {error && <p className="error-message text-red-600 mt-4">{error}</p>}{" "}
+          {error && (
+            <p role="alert" aria-live="assertive" className="error-message text-red-600 mt-4">
+              {error}
+            </p>
+          )}
         </form>
       </div>
     </div>
