@@ -118,78 +118,115 @@ const EditEvent = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="form-container">
-        <h2 className="text-center text-xl font-bold mb-6">Edit Event</h2>
+      <div
+        className="form-container"
+        role="form"
+        aria-labelledby="edit-event-header"
+      >
+        <h2
+          id="edit-event-header"
+          className="text-center text-xl font-bold mb-6"
+        >
+          Edit Event
+        </h2>
         <form onSubmit={handleUpdateEvent}>
           <div className="mb-4">
-            <label className="form-label">Title:</label>
+            <label htmlFor="event-title" className="form-label">
+              Title:
+            </label>
             <input
+              id="event-title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
               className="form-input"
+              aria-required="true"
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Description:</label>
+            <label htmlFor="event-description" className="form-label">
+              Description:
+            </label>
             <textarea
+              id="event-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
               className="form-input"
+              aria-required="true"
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Location:</label>
+            <label htmlFor="event-location" className="form-label">
+              Location:
+            </label>
             <input
+              id="event-location"
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               required
               className="form-input"
+              aria-required="true"
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Start Date and Time:</label>
+            <label htmlFor="start-datetime" className="form-label">
+              Start Date and Time:
+            </label>
             <input
+              id="start-datetime"
               type="datetime-local"
               value={startDateTime}
               onChange={(e) => setStartDateTime(e.target.value)}
               required
               className="form-input"
+              aria-required="true"
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">End Date and Time:</label>
+            <label htmlFor="end-datetime" className="form-label">
+              End Date and Time:
+            </label>
             <input
+              id="end-datetime"
               type="datetime-local"
               value={endDateTime}
               onChange={(e) => setEndDateTime(e.target.value)}
               required
               className="form-input"
+              aria-required="true"
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Price:</label>
+            <label htmlFor="event-price" className="form-label">
+              Price:
+            </label>
             <input
+              id="event-price"
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
               className="form-input"
+              aria-required="true"
             />
           </div>
           <div className="mb-4">
-            <label className="form-label">Event Image:</label>
+            <label htmlFor="event-image" className="form-label">
+              Event Image:
+            </label>
             <input
+              id="event-image"
               type="file"
               onChange={handleImageChange}
               className="form-input"
+              aria-describedby="image-upload-instructions"
             />
             {uploadError && <div className="error-message">{uploadError}</div>}
             {imageUploadProgress !== null && (
-              <div className="progress-bar">
+              <div className="progress-bar" aria-live="polite">
                 Uploading Image: {Math.round(imageUploadProgress)}%
               </div>
             )}
