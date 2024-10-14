@@ -103,18 +103,31 @@ const CreateEvent = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="form-container">
-        <h2 className="text-center text-xl font-bold mb-6">Create Event</h2>
+      <div
+        className="form-container"
+        role="form"
+        aria-labelledby="create-event-header"
+      >
+        <h2
+          id="create-event-header"
+          className="text-center text-xl font-bold mb-6"
+        >
+          Create Event
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label className="form-label">Title:</label>
+            <label htmlFor="event-title" className="form-label">
+              Title:
+            </label>
             <input
+              id="event-title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className={`form-input ${
                 formErrors.title ? "border-red-500" : ""
               }`}
+              aria-invalid={formErrors.title ? "true" : "false"}
             />
             {formErrors.title && (
               <small className="text-red-500">{formErrors.title}</small>
@@ -122,13 +135,17 @@ const CreateEvent = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label">Description:</label>
+            <label htmlFor="event-description" className="form-label">
+              Description:
+            </label>
             <textarea
+              id="event-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className={`form-input ${
                 formErrors.description ? "border-red-500" : ""
               }`}
+              aria-invalid={formErrors.description ? "true" : "false"}
             />
             {formErrors.description && (
               <small className="text-red-500">{formErrors.description}</small>
@@ -136,14 +153,18 @@ const CreateEvent = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label">Location:</label>
+            <label htmlFor="event-location" className="form-label">
+              Location:
+            </label>
             <input
+              id="event-location"
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               className={`form-input ${
                 formErrors.location ? "border-red-500" : ""
               }`}
+              aria-invalid={formErrors.location ? "true" : "false"}
             />
             {formErrors.location && (
               <small className="text-red-500">{formErrors.location}</small>
@@ -151,14 +172,18 @@ const CreateEvent = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label">Start Date and Time:</label>
+            <label htmlFor="start-datetime" className="form-label">
+              Start Date and Time:
+            </label>
             <input
+              id="start-datetime"
               type="datetime-local"
               value={startDateTime}
               onChange={(e) => setStartDateTime(e.target.value)}
               className={`form-input ${
                 formErrors.startDateTime ? "border-red-500" : ""
               }`}
+              aria-invalid={formErrors.startDateTime ? "true" : "false"}
             />
             {formErrors.startDateTime && (
               <small className="text-red-500">{formErrors.startDateTime}</small>
@@ -166,14 +191,18 @@ const CreateEvent = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label">End Date and Time:</label>
+            <label htmlFor="end-datetime" className="form-label">
+              End Date and Time:
+            </label>
             <input
+              id="end-datetime"
               type="datetime-local"
               value={endDateTime}
               onChange={(e) => setEndDateTime(e.target.value)}
               className={`form-input ${
                 formErrors.endDateTime ? "border-red-500" : ""
               }`}
+              aria-invalid={formErrors.endDateTime ? "true" : "false"}
             />
             {formErrors.endDateTime && (
               <small className="text-red-500">{formErrors.endDateTime}</small>
@@ -181,8 +210,11 @@ const CreateEvent = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label">Price:</label>
+            <label htmlFor="event-price" className="form-label">
+              Price:
+            </label>
             <input
+              id="event-price"
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
@@ -190,6 +222,7 @@ const CreateEvent = () => {
               className={`form-input ${
                 formErrors.price ? "border-red-500" : ""
               }`}
+              aria-invalid={formErrors.price ? "true" : "false"}
             />
             {formErrors.price && (
               <small className="text-red-500">{formErrors.price}</small>
@@ -197,21 +230,34 @@ const CreateEvent = () => {
           </div>
 
           <div className="mb-4">
-            <label className="form-label">Event Image:</label>
+            <label htmlFor="event-image" className="form-label">
+              Event Image:
+            </label>
             <input
+              id="event-image"
               type="file"
               onChange={handleImageChange}
               className={`form-input ${
                 formErrors.image ? "border-red-500" : ""
               }`}
+              aria-invalid={formErrors.image ? "true" : "false"}
+              aria-describedby="image-upload-instructions"
             />
+            <small id="image-upload-instructions" className="text-gray-600">
+              Please upload an image for the event (JPG, PNG, max 5MB).
+            </small>
             {formErrors.image && (
               <small className="text-red-500">{formErrors.image}</small>
             )}
           </div>
 
           {error && (
-            <div className="error-message text-red-600 mb-4">{error}</div>
+            <div
+              className="error-message text-red-600 mb-4"
+              aria-live="assertive"
+            >
+              {error}
+            </div>
           )}
 
           <button
@@ -220,6 +266,7 @@ const CreateEvent = () => {
             className={`button ${
               loading ? "button-disabled" : "button-primary"
             }`}
+            aria-busy={loading}
           >
             {loading ? "Creating Event..." : "Create Event"}
           </button>
