@@ -34,6 +34,9 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
         if (eventDoc.exists()) {
           const eventData = eventDoc.data();
           setEvent(eventData);
+        } else {
+          setEvent (null);
+          alert("Event not found.");
         }
       } catch (error) {
         console.error("Error fetching event:", error);
@@ -79,6 +82,7 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
     try {
       setRegistering(true);
       if (isRegistered) {
+        alert("You are already registered for this event.");
         setRegistering(false);
         return;
       }
