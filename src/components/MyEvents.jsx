@@ -20,6 +20,7 @@ const MyEvents = () => {
   const [registeredEvents, setRegisteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cancelEventId, setCancelEventId] = useState(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,6 +54,7 @@ const MyEvents = () => {
         setRegisteredEvents(eventsData);
       } catch (error) {
         console.error("Error fetching registered events:", error);
+        setError("Failed to load registered events. Please try again.")
       } finally {
         setLoading(false);
       }
@@ -124,7 +126,9 @@ const MyEvents = () => {
       <div className="loading-text">Loading your registered events...</div>
     );
   }
-
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
   if (registeredEvents.length === 0) {
     return (
       <div className="text-center py-4">
@@ -142,6 +146,13 @@ const MyEvents = () => {
             <div
               onClick={() => handleEventClick(event.id)}
               className="cursor-pointer"
+              role="button"
+              tabIndex={0}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleEventClick(event.id);
+                }
+              }}
             >
               {event.imageUrl && (
                 <img
@@ -162,6 +173,7 @@ const MyEvents = () => {
               <button
                 onClick={() => addToGoogleCalendar(event)}
                 className="button button-primary flex items-center w-full mb-2"
+                aria-label={`Add ${event.title} to Google Calendar`}
               >
                 <img
                   src={GoogleCalendarIcon}
@@ -178,6 +190,7 @@ const MyEvents = () => {
                     ? "opacity-50 cursor-not-allowed"
                     : ""
                 }`}
+                aria-label={`Cancel registration for ${event.title}`}
               >
                 {cancelEventId === event.id
                   ? "Cancelling..."
