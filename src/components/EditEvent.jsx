@@ -18,6 +18,8 @@ const EditEvent = () => {
   const [price, setPrice] = useState("");
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [uploadError, setUploadError] = useState(null);
+  const [imageUploadProgress, setImageUploadProgress] = useState(null);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -42,6 +44,8 @@ const EditEvent = () => {
           setStartDateTime(eventStartDateTime.toISOString().slice(0, 16));
           setEndDateTime(eventEndDateTime.toISOString().slice(0, 16));
           setPrice(eventData.price);
+        } else {
+          alert("Event not found.")
         }
       } catch (error) {
         console.error("Error fetching event:", error);
@@ -64,7 +68,7 @@ const EditEvent = () => {
     setUpdating(true);
     const eventRef = doc(db, "Events", id);
     try {
-      let imageUrl = event.imageUrl;
+      let imageUrl = event?.imageUrl || "";
 
       if (image) {
         const storageRef = ref(storage, `event_images/${image.name}`);
@@ -97,11 +101,14 @@ const EditEvent = () => {
       );
       await Promise.all(updates);
 
+      alert("Event updated successfully!");
       navigate(`/events/${id}`);
     } catch (error) {
       console.error("Error updating event:", error);
+      alert("An error occurred while updating the event. Please try again.");
     } finally {
       setUpdating(false);
+      setImageUploadProgress(null);
     }
   };
 
@@ -180,6 +187,12 @@ const EditEvent = () => {
               onChange={handleImageChange}
               className="form-input"
             />
+            {uploadError && <div className="error-message">{uploadError}</div>}
+            {imageUploadProgress !== null && (
+              <div className="progress-bar">
+                Uploading Image: {Math.round(imageUploadProgress)}%
+              </div>
+            )}
           </div>
           <button
             type="submit"
