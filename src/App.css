@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 .button {
-  @apply w-full p-2 text-white font-bold rounded-md transition duration-200;
+  @apply w-full p-2 text-white font-light rounded-md transition duration-200;
 }
 
 .button-primary {
-  @apply bg-[#FF5A5F] hover:bg-[#FF4C4F];
+  @apply bg-gradient-to-r from-[#FF5A5F] to-[#FF4C4F] hover:opacity-80;
 }
 
 .button-disabled {
@@ -107,7 +107,7 @@ body {
   display: inline-block;
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
-  font-weight: bold;
+  font-weight: light; 
   border-radius: 0.5rem;
   transition: background-color 0.2s;
 }

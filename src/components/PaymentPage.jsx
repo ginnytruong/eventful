@@ -153,7 +153,7 @@ const PaymentPage = () => {
         onError={handlePaymentError}
       />
 
-      {errorMessage && <div className="error-text">{errorMessage}</div>}
+      {error && <div className="error-text">{error}</div>}
     </div>
   );
 };
