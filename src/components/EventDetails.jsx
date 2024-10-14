@@ -256,7 +256,7 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
               Please log in to sign up for the event.
             </p>
           )}
-
+          
           {isRegistered && (
             <div className="registration-info">
               <p className="success-message" tabIndex={0}>
