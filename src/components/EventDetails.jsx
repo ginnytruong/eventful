@@ -26,6 +26,7 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
   const [loading, setLoading] = useState(true);
   const [registering, setRegistering] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -36,10 +37,11 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
           setEvent(eventData);
         } else {
           setEvent (null);
-          alert("Event not found.");
+          setError("Event not found.");
         }
       } catch (error) {
         console.error("Error fetching event:", error);
+        setError("An error occured while fetching event details. Please try again.")
       } finally {
         setLoading(false);
       }
@@ -109,7 +111,7 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
       }
     } catch (error) {
       console.error("Error registering for event:", error);
-      alert(
+      setError(
         "An error occurred while registering for the event. Please try again."
       );
     } finally {
@@ -136,7 +138,7 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
         navigate("/events");
       } catch (error) {
         console.error("Error deleting event:", error);
-        alert("An error occurred while deleting the event. Please try again.");
+        setError("An error occurred while deleting the event. Please try again.");
       } finally {
         setDeleting(false);
       }
@@ -169,6 +171,9 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
   if (loading) {
     return <div className="loading-text">Loading event details...</div>;
   }
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
   if (!event) {
     return <div className="loading-text">Event not found.</div>;
   }
@@ -176,18 +181,32 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
   return (
     <div className="event-details-container">
       {event.imageUrl && (
-        <img src={event.imageUrl} alt={event.title} className="event-image" />
+        <img
+          src={event.imageUrl}
+          alt={event.title}
+          className="event-image"
+          role="img"
+          aria-label={`Image for ${event.title}`}
+        />
       )}
-      <h2 className="event-title">{event.title}</h2>
-      <p className="event-location">{event.location}</p>
-      <p className="event-datetime">
+      <h2 className="event-title" tabIndex={0}>
+        {event.title}
+      </h2>
+      <p className="event-location" tabIndex={0}>
+        {event.location}
+      </p>
+      <p className="event-datetime" tabIndex={0}>
         Start: {event.startDateTime.toDate().toString()} <br />
         End: {event.endDateTime.toDate().toString()}
       </p>
       <hr className="my-4" />
-      <p className="event-description">{event.description}</p>
+      <p className="event-description" tabIndex={0}>
+        {event.description}
+      </p>
       <hr className="my-4" />
-      <p className="event-price">Price: £{event.price}</p>
+      <p className="event-price" tabIndex={0}>
+        Price: £{event.price}
+      </p>
 
       <div className="button-container">
         {role === "staff" && (
@@ -198,6 +217,7 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
             <button
               onClick={() => navigate(`/events/${id}/edit`)}
               className="button button-primary mr-2"
+              aria-label="Edit Event"
             >
               Edit Event
             </button>
@@ -207,6 +227,7 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
               className={`button button-danger ${
                 deleting ? "button-disabled" : ""
               }`}
+              aria-label="Delete Event"
             >
               {deleting ? "Deleting..." : "Delete Event"}
             </button>
@@ -220,6 +241,7 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
             className={`button button-primary ${
               registering ? "button-disabled" : ""
             }`}
+            aria-label="Sign Up for Event"
           >
             {registering ? "Signing up..." : "Sign Up for Event"}
           </button>
@@ -227,12 +249,13 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
 
         {isRegistered && (
           <div className="registration-info">
-            <p className="success-message">
+            <p className="success-message" tabIndex={0}>
               You have registered for this event!
             </p>
             <button
               onClick={addToGoogleCalendar}
               className="button button-primary flex items-center"
+              aria-label="Add to Google Calendar"
             >
               <img
                 src={GoogleCalendarIcon}
