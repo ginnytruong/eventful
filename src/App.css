@@ -164,3 +164,14 @@ hr {
 .strong-password-message {
   @apply text-green-500;
 }
+
+.link-button {
+  color: #4A5568; 
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.link-button:hover {
+  background-color: #E2E8F0;
+}
