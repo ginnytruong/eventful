@@ -16,6 +16,7 @@ const CreateEvent = () => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
 
@@ -25,64 +26,43 @@ const CreateEvent = () => {
     }
   };
 
+  const validateForm = () => {
+    let errors = {};
+
+    if (!title) errors.title = "Title is required.";
+    if (!description) errors.description = "Description is required.";
+    if (!location) errors.location = "Location is required.";
+    if (!startDateTime)
+      errors.startDateTime = "Start date and time are required.";
+    if (!endDateTime) errors.endDateTime = "End date and time are required.";
+    if (price < 0) errors.price = "Price must be a positive number.";
+    if (!image) errors.image = "You must upload an image.";
+
+    const startDate = new Date(startDateTime);
+    const endDate = new Date(endDateTime);
+    if (startDate <= new Date())
+      errors.startDateTime = "Start date must be in the future.";
+    if (endDate <= startDate)
+      errors.endDateTime = "End date must be after the start date.";
+
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      setLoading(false);
+      return;
+    }
+
     try {
       if (!user) {
         alert("You must be logged in to create an event.");
-        setLoading(false);
-        return;
-      }
-
-      if (!title) {
-        setError("You must fill in the title.");
-        setLoading(false);
-        return;
-      }
-      if (!description) {
-        setError("You must fill in the description.");
-        setLoading(false);
-        return;
-      }
-      if (!location) {
-        setError("You must fill in the location.");
-        setLoading(false);
-        return;
-      }
-      if (!startDateTime) {
-        setError("You must fill in the start date and time.");
-        setLoading(false);
-        return;
-      }
-      if (!endDateTime) {
-        setError("You must fill in the end date and time.");
-        setLoading(false);
-        return;
-      }
-      if (price < 0) {
-        setError("Price must be a positive number.");
-        setLoading(false);
-        return;
-      }
-      if (image === null) {
-        setError("You must upload an image.");
-        setLoading(false);
-        return;
-      }
-
-      const startDate = new Date(startDateTime);
-      const endDate = new Date(endDateTime);
-
-      if (startDate <= new Date()) {
-        setError("Start date and time must be in the future.");
-        setLoading(false);
-        return;
-      }
-      if (endDate <= startDate) {
-        setError("End date and time must be after start date and time.");
         setLoading(false);
         return;
       }
@@ -110,7 +90,6 @@ const CreateEvent = () => {
       });
 
       const eventId = docRef.id;
-
       await updateDoc(docRef, { id: eventId });
 
       navigate("/events");
@@ -133,71 +112,108 @@ const CreateEvent = () => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              required
-              className="form-input"
+              className={`form-input ${
+                formErrors.title ? "border-red-500" : ""
+              }`}
             />
+            {formErrors.title && (
+              <small className="text-red-500">{formErrors.title}</small>
+            )}
           </div>
+
           <div className="mb-4">
             <label className="form-label">Description:</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              required
-              className="form-input"
+              className={`form-input ${
+                formErrors.description ? "border-red-500" : ""
+              }`}
             />
+            {formErrors.description && (
+              <small className="text-red-500">{formErrors.description}</small>
+            )}
           </div>
+
           <div className="mb-4">
             <label className="form-label">Location:</label>
             <input
               type="text"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
-              required
-              className="form-input"
+              className={`form-input ${
+                formErrors.location ? "border-red-500" : ""
+              }`}
             />
+            {formErrors.location && (
+              <small className="text-red-500">{formErrors.location}</small>
+            )}
           </div>
+
           <div className="mb-4">
             <label className="form-label">Start Date and Time:</label>
             <input
               type="datetime-local"
               value={startDateTime}
               onChange={(e) => setStartDateTime(e.target.value)}
-              required
-              className="form-input"
+              className={`form-input ${
+                formErrors.startDateTime ? "border-red-500" : ""
+              }`}
             />
+            {formErrors.startDateTime && (
+              <small className="text-red-500">{formErrors.startDateTime}</small>
+            )}
           </div>
+
           <div className="mb-4">
             <label className="form-label">End Date and Time:</label>
             <input
               type="datetime-local"
               value={endDateTime}
               onChange={(e) => setEndDateTime(e.target.value)}
-              required
-              className="form-input"
+              className={`form-input ${
+                formErrors.endDateTime ? "border-red-500" : ""
+              }`}
             />
+            {formErrors.endDateTime && (
+              <small className="text-red-500">{formErrors.endDateTime}</small>
+            )}
           </div>
+
           <div className="mb-4">
             <label className="form-label">Price:</label>
             <input
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              required
-              className="form-input"
               min="0"
+              className={`form-input ${
+                formErrors.price ? "border-red-500" : ""
+              }`}
             />
+            {formErrors.price && (
+              <small className="text-red-500">{formErrors.price}</small>
+            )}
           </div>
+
           <div className="mb-4">
             <label className="form-label">Event Image:</label>
             <input
               type="file"
               onChange={handleImageChange}
-              className="form-input"
+              className={`form-input ${
+                formErrors.image ? "border-red-500" : ""
+              }`}
             />
+            {formErrors.image && (
+              <small className="text-red-500">{formErrors.image}</small>
+            )}
           </div>
+
           {error && (
             <div className="error-message text-red-600 mb-4">{error}</div>
           )}
+
           <button
             type="submit"
             disabled={loading}
