@@ -10,34 +10,33 @@ const EventList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("date");
 
-useEffect(() => {
-  const fetchEvents = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "Events"));
-      const eventsData = querySnapshot.docs.map((doc) => {
-        const startDateTime = doc.data().startDateTime;
-        const endDateTime = doc.data().endDateTime;
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "Events"));
+        const eventsData = querySnapshot.docs.map((doc) => {
+          const startDateTime = doc.data().startDateTime;
+          const endDateTime = doc.data().endDateTime;
 
-        return {
-          id: doc.id,
-          ...doc.data(),
-          startDateTime: startDateTime?.toDate(),
-          endDateTime: endDateTime?.toDate(),
-        };
-      });
+          return {
+            id: doc.id,
+            ...doc.data(),
+            startDateTime: startDateTime?.toDate(),
+            endDateTime: endDateTime?.toDate(),
+          };
+        });
 
-      setEvents(eventsData);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-      setError("Failed to load events. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+        setEvents(eventsData);
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        setError("Failed to load events. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchEvents();
-}, []);
-
+    fetchEvents();
+  }, []);
 
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -69,40 +68,68 @@ useEffect(() => {
     );
   }
 
-  if (filteredEvents.length === 0) {
-    return (
-      <div className="no-events-message">
-        No events found matching your criteria.
-      </div>
-    );
-  }
-
   return (
-    <div className="flex flex-col items-center mx-5 my-5">
+    <section className="flex flex-col items-center mx-5 my-5">
+      {loading && (
+        <div role="alert" aria-live="assertive" className="loading-text">
+          Loading events...
+        </div>
+      )}
+
+      {error && (
+        <div role="alert" aria-live="assertive" className="error-message">
+          {error}
+          <button onClick={handleRetry} aria-label="Retry fetching events">
+            Retry
+          </button>
+        </div>
+      )}
+
       <div className="search-sort-container">
+        <label htmlFor="search" className="sr-only">
+          Search events
+        </label>
         <input
           type="text"
+          id="search"
           placeholder="Search events..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-bar"
+          aria-label="Search events"
         />
+
+        <label htmlFor="sort" className="sr-only">
+          Sort events
+        </label>
         <select
+          id="sort"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
           className="sort-dropdown"
+          aria-label="Sort by"
         >
           <option value="date">Sort by Date</option>
           <option value="title">Sort by Title</option>
         </select>
       </div>
+
+      {filteredEvents.length === 0 && (
+        <div className="no-events-message my-4">
+          No events found matching your criteria.
+        </div>
+      )}
+
       <div className="flex flex-wrap justify-center">
         {sortedEvents.map((event) => (
-          <div
+          <article
             className="bg-white rounded-lg shadow-lg m-4 p-4 w-80 transform transition-transform duration-200 hover:translate-y-1 hover:shadow-2xl"
             key={event.id}
           >
-            <Link to={`/events/${event.id}`}>
+            <Link
+              to={`/events/${event.id}`}
+              aria-label={`View details for ${event.title}`}
+            >
               {event.imageUrl && (
                 <img
                   src={event.imageUrl}
@@ -114,7 +141,7 @@ useEffect(() => {
                 {event.title}
               </h3>
               <p className="font-poppins text-sm text-gray-600">
-                {event.location}
+                Location: {event.location}
               </p>
               <p className="font-poppins text-sm text-gray-600">
                 Start: {event.startDateTime.toLocaleString()}{" "}
@@ -124,10 +151,10 @@ useEffect(() => {
                 {event.endDateTime ? event.endDateTime.toLocaleString() : "N/A"}{" "}
               </p>
             </Link>
-          </div>
+          </article>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
