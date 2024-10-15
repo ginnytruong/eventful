@@ -22,6 +22,7 @@ const PaymentPage = () => {
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [paypalReady, setPaypalReady] = useState(false);
 
   useEffect(() => {
     const loadPayPalScript = () => {
@@ -30,6 +31,7 @@ const PaymentPage = () => {
         import.meta.env.VITE_PAYPAL_CLIENT_ID
       }&currency=GBP`;
       script.async = true;
+      script.onload = () => setPaypalReady(true);
       script.onerror = () => {
         console.error("Failed to load PayPal SDK script.");
         setError("Failed to load PayPal SDK script.");
@@ -132,26 +134,28 @@ const PaymentPage = () => {
         <p className="event-price">Price: £{event.price}</p>
       </div>
 
-      <PayPalButtons
-        createOrder={(data, actions) => {
-          return actions.order.create({
-            purchase_units: [
-              {
-                amount: {
-                  currency_code: "GBP",
-                  value: event.price.toFixed(2),
+      {paypalReady && (
+        <PayPalButtons
+          createOrder={(data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: {
+                    currency_code: "GBP",
+                    value: event.price.toFixed(2),
+                  },
+                  description: event.title,
                 },
-                description: event.title,
-              },
-            ],
-          });
-        }}
-        onApprove={async (data, actions) => {
-          const details = await actions.order.capture();
-          await handlePaymentSuccess(details);
-        }}
-        onError={handlePaymentError}
-      />
+              ],
+            });
+          }}
+          onApprove={async (data, actions) => {
+            const details = await actions.order.capture();
+            await handlePaymentSuccess(details);
+          }}
+          onError={handlePaymentError}
+        />
+      )}
 
       {error && <div className="error-text">{error}</div>}
     </div>
