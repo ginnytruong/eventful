@@ -139,7 +139,7 @@ const MyEvents = () => {
 
   return (
     <div className="container mx-auto p-4 md:p-8 lg:p-12">
-      <h6 className="text-3xl font-bold mb-6">Upcoming Events</h6>
+      <h2 className="text-3xl font-bold mb-6">Upcoming Events</h2>
       <ul className="space-y-6">
         {registeredEvents.map((event) => (
           <li key={event.id} className="border rounded-lg p-4 shadow-md">

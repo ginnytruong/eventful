@@ -110,9 +110,9 @@ const PaymentPage = () => {
 
   return (
     <div className="payment-page-container flex flex-col items-center justify-center">
-      <h7 className="text-2xl font-bold mb-4" aria-live="polite">
+      <h2 className="text-2xl font-bold mb-4" aria-live="polite">
         Payment for {event.title}
-      </h7>
+      </h2>
 
       {event.imageUrl && (
         <img

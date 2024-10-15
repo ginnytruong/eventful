@@ -100,7 +100,7 @@ const CreateAccount = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="form-container">
-        <h1 className="text-center text-xl font-bold mb-6">Create Account</h1>
+        <h2 className="text-center text-xl font-bold mb-6">Create Account</h2>
         <form
           onSubmit={handleCreateAccount}
           aria-labelledby="create-account-form"

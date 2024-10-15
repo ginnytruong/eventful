@@ -105,7 +105,7 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="form-container">
-        <h5 className="text-center text-xl font-bold mb-6">Login</h5>
+        <h2 className="text-center text-xl font-bold mb-6">Login</h2>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label htmlFor="email" className="form-label">
