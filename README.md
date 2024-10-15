@@ -13,6 +13,8 @@ Eventful is fully responsive and designed to work seamlessly on both desktop and
 - **Role-Based Access**: Different functionalities are available based on user roles (staff or non-staff).
 - **Responsive Design**: The platform is designed to be fully responsive and accessible across devices, including mobile.
 
+![alt text](image.png)
+
 ## Technologies Used
 
 - **Frontend**: React, Tailwind CSS
@@ -23,8 +25,6 @@ Eventful is fully responsive and designed to work seamlessly on both desktop and
 
 ## Live Demo
 The project is hosted at: https://eventful-events.netlify.app/
-
-![alt text](image.png)
 
 ### Test Accounts
 Use the following test accounts to explore the platform:
