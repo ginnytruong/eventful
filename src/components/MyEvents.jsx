@@ -90,7 +90,7 @@ const MyEvents = () => {
       }
     } catch (error) {
       console.error("Error cancelling registration:", error);
-      alert("An error occurred while cancelling the event. Please try again.");
+      setError("An error occurred while cancelling the event. Please try again.");
     } finally {
       setCancelEventId(null);
     }

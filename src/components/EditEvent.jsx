@@ -20,6 +20,7 @@ const EditEvent = () => {
   const [updating, setUpdating] = useState(false);
   const [uploadError, setUploadError] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -45,10 +46,13 @@ const EditEvent = () => {
           setEndDateTime(eventEndDateTime.toISOString().slice(0, 16));
           setPrice(eventData.price);
         } else {
-          alert("Event not found.")
+          setError("Event not found.")
         }
       } catch (error) {
         console.error("Error fetching event:", error);
+        setError(
+          "An error occurred while fetching the event. Please try again."
+        );
       } finally {
         setLoading(false);
       }
@@ -66,6 +70,7 @@ const EditEvent = () => {
   const handleUpdateEvent = async (e) => {
     e.preventDefault();
     setUpdating(true);
+    setError("");
     const eventRef = doc(db, "Events", id);
     try {
       let imageUrl = event?.imageUrl || "";
@@ -101,11 +106,11 @@ const EditEvent = () => {
       );
       await Promise.all(updates);
 
-      alert("Event updated successfully!");
+      setError("Event updated successfully!");
       navigate(`/events/${id}`);
     } catch (error) {
       console.error("Error updating event:", error);
-      alert("An error occurred while updating the event. Please try again.");
+      setError("An error occurred while updating the event. Please try again.");
     } finally {
       setUpdating(false);
       setImageUploadProgress(null);
@@ -231,6 +236,7 @@ const EditEvent = () => {
               </div>
             )}
           </div>
+          {error && <div className="error-message">{error}</div>}
           <button
             type="submit"
             disabled={updating}

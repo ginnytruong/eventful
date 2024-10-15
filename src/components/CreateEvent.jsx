@@ -62,7 +62,7 @@ const CreateEvent = () => {
 
     try {
       if (!user) {
-        alert("You must be logged in to create an event.");
+        setError("You must be logged in to create an event.");
         setLoading(false);
         return;
       }
@@ -95,7 +95,7 @@ const CreateEvent = () => {
       navigate("/events");
     } catch (error) {
       console.error("Error creating event:", error);
-      alert("An error occurred while creating the event. Please try again.");
+      setError("An error occurred while creating the event. Please try again.");
     } finally {
       setLoading(false);
     }
