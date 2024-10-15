@@ -24,6 +24,8 @@ Eventful is fully responsive and designed to work seamlessly on both desktop and
 ## Live Demo
 The project is hosted at: https://eventful-events.netlify.app/
 
+![alt text](image.png)
+
 ### Test Accounts
 Use the following test accounts to explore the platform:
 
