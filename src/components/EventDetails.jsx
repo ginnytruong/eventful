@@ -110,7 +110,6 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
           });
 
           setIsRegistered(true);
-          setError("Registered successfully for this event!");
         }
       } catch (error) {
         console.error("Error registering for event:", error);
