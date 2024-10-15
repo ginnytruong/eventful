@@ -84,7 +84,7 @@ return (
         {role === "staff" && (
           <Link
             to="/create-event"
-            className="link-button"
+            className="button-primary"
             aria-label="Create a new event"
           >
             Create Event

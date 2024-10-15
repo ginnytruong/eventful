@@ -27,7 +27,7 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading((prev) => ({ ...prev, emailPassword: false }));
+    setLoading((prev) => ({ ...prev, emailPassword: true }));
     setError("");
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -55,11 +55,17 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Login error:", error);
-      setError(
-        error.code === "auth/invalid-credential"
-          ? "Incorrect email or password. Please try again or create an account."
-          : "An error occurred. Please try again."
-      );
+      if (error.code === "auth/too-many-requests") {
+        setError(
+          "Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or try again later."
+        );
+      } else if (error.code === "auth/invalid-credential") {
+        setError(
+          "Incorrect email or password. Please try again or create an account."
+        );
+      } else {
+        setError("An error occurred. Please try again.");
+      }
     } finally {
       setLoading((prev) => ({ ...prev, emailPassword: false }));
     }
