@@ -194,17 +194,23 @@ const CreateAccount = () => {
               {passwordMatch}
             </small>{" "}
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className={`button ${
-              loading ? "button-disabled" : "button-primary"
-            }`}
-          >
-            {loading ? "Signing Up..." : "Sign Up"}
-          </button>
+          <div className="flex justify-center mt-6">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`button ${
+                loading ? "button-disabled" : "button-primary"
+              }`}
+            >
+              {loading ? "Signing Up..." : "Sign Up"}
+            </button>
+          </div>
           {error && (
-            <p role="alert" aria-live="assertive" className="error-message text-red-600 mt-4">
+            <p
+              role="alert"
+              aria-live="assertive"
+              className="error-message text-red-600 mt-4"
+            >
               {error}
             </p>
           )}

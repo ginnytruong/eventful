@@ -99,7 +99,7 @@ const sortedEvents = filteredEvents.sort((a, b) => {
           placeholder="Search events..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-bar"
+          className="search-bar w-2/3"
           aria-label="Search events"
         />
 
@@ -110,7 +110,7 @@ const sortedEvents = filteredEvents.sort((a, b) => {
           id="sort"
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="sort-dropdown"
+          className="sort-dropdown w-1/3"
           aria-label="Sort by"
         >
           <option value="date">Sort by Date</option>

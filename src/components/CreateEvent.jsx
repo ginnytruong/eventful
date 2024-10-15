@@ -259,7 +259,7 @@ const CreateEvent = () => {
               {error}
             </div>
           )}
-
+        <div className="flex justify-center">
           <button
             type="submit"
             disabled={loading}
@@ -270,6 +270,7 @@ const CreateEvent = () => {
           >
             {loading ? "Creating Event..." : "Create Event"}
           </button>
+        </div>
         </form>
       </div>
     </div>

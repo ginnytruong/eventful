@@ -211,10 +211,10 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
           Price: £{event.price}
         </p>
 
-        <div className="button-container">
+        <div className="button-container flex justify-center items-center">
           {role === "staff" && (
             <div className="staff-actions mb-4">
-              <p className="registration-count">
+              <p className="registration-count flex justify-center">
                 Guests Registered: {registrationCount}
               </p>
               <button
@@ -237,7 +237,7 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
             </div>
           )}
 
-          {!isRegistered && user && role !== "staff" &&(
+          {!isRegistered && user && role !== "staff" && (
             <button
               onClick={handleRegistration}
               disabled={registering}
@@ -263,7 +263,7 @@ import GoogleCalendarIcon from "../assets/google-cal-icon.svg";
               </p>
               <button
                 onClick={addToGoogleCalendar}
-                className="button button-primary flex items-center"
+                className="button button-primary flex items-center w-full"
                 aria-label="Add to Google Calendar"
               >
                 <img

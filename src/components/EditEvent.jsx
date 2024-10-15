@@ -237,15 +237,17 @@ const EditEvent = () => {
             )}
           </div>
           {error && <div className="error-message">{error}</div>}
-          <button
-            type="submit"
-            disabled={updating}
-            className={`button ${
-              updating ? "button-disabled" : "button-primary"
-            }`}
-          >
-            {updating ? "Updating..." : "Update Event"}
-          </button>
+          <div className="flex justify-center mt-6">
+            <button
+              type="submit"
+              disabled={updating}
+              className={`button ${
+                updating ? "button-disabled" : "button-primary"
+              }`}
+            >
+              {updating ? "Updating..." : "Update Event"}
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -135,15 +135,17 @@ const Login = () => {
               aria-label="Password input"
             />
           </div>
-          <button
-            type="submit"
-            disabled={loading.emailPassword}
-            className={`button ${
-              loading.emailPassword ? "button-disabled" : "button-primary"
-            }`}
-          >
-            {loading.emailPassword ? "Logging In..." : "Log In"}
-          </button>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              disabled={loading.emailPassword}
+              className={`button ${
+                loading.emailPassword ? "button-disabled" : "button-primary"
+              } w-48`}
+            >
+              {loading.emailPassword ? "Logging In..." : "Log In"}
+            </button>
+          </div>
           <div className="flex justify-center mt-4">
             <button
               type="button"

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .button {
-  @apply w-full p-2 text-white font-light rounded-md transition duration-200;
+  @apply p-2 text-white font-light rounded-md transition duration-200;
 }
 
 .button-primary {
@@ -100,16 +100,17 @@ body {
 }
 
 .button-container {
-  display: flex;
+  
 }
 
 .button {
   display: inline-block;
   padding: 0.5rem 1rem;
   margin-bottom: 1rem;
+  margin-top: 1rem;
   font-weight: light; 
   border-radius: 0.5rem;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s;; 
 }
 
 .button-danger {
@@ -148,7 +149,7 @@ hr {
 
 .search-bar,
 .sort-dropdown {
-  @apply w-full p-4 text-gray-700 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500 transition duration-200 ease-in-out;
+  @apply p-4 text-gray-700 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-500 transition duration-200 ease-in-out;
 }
 
 .search-sort-container {

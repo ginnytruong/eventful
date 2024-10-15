@@ -169,10 +169,11 @@ const MyEvents = () => {
               </p>
               <p className="event-price">Price: £{event.price}</p>
             </div>
-            <div className="button-container flex flex-col">
+            <hr className="my-4" />
+            <div className="button-container flex justify-center items-center">
               <button
                 onClick={() => addToGoogleCalendar(event)}
-                className="button button-primary flex items-center w-full mb-2"
+                className="button button-primary flex items-center mr-4"
                 aria-label={`Add ${event.title} to Google Calendar`}
               >
                 <img
@@ -185,7 +186,7 @@ const MyEvents = () => {
               <button
                 onClick={() => handleCancellation(event.id)}
                 disabled={cancelEventId === event.id}
-                className={`button button-danger w-full ${
+                className={`button button-danger w-64 ${
                   cancelEventId === event.id
                     ? "opacity-50 cursor-not-allowed"
                     : ""
