@@ -42,12 +42,16 @@ const EventList = () => {
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const sortedEvents = filteredEvents.sort((a, b) => {
-    if (sortBy === "title") {
+const sortedEvents = filteredEvents.sort((a, b) => {
+  switch (sortBy) {
+    case "title":
       return a.title.localeCompare(b.title);
-    }
-    return (a.startDateTime || 0) - (b.startDateTime || 0);
-  });
+    case "price":
+      return (a.price || 0) - (b.price || 0); // Sort by price
+    default: // Default to sorting by date
+      return (a.startDateTime || 0) - (b.startDateTime || 0);
+  }
+});
 
   const handleRetry = () => {
     setLoading(true);
@@ -111,6 +115,7 @@ const EventList = () => {
         >
           <option value="date">Sort by Date</option>
           <option value="title">Sort by Title</option>
+          <option value="price">Sort by Price</option>
         </select>
       </div>
 
