@@ -18,12 +18,8 @@ const App = () => {
   const [paypalClientId, setPaypalClientId] = useState("");
 
   useEffect(() => {
-    fetch("../client_id.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setGoogleClientId(data.web.client_id);
-      })
-      .catch((err) => console.error("Error loading client_id.json:", err));
+    const id = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    setGoogleClientId(id);
   }, []);
 
   useEffect(() => {
