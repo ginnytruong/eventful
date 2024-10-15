@@ -18,7 +18,7 @@ const App = () => {
   const [paypalClientId, setPaypalClientId] = useState("");
 
   useEffect(() => {
-    fetch("/client_id.json")
+    fetch("../client_id.json")
       .then((response) => response.json())
       .then((data) => {
         setGoogleClientId(data.web.client_id);
