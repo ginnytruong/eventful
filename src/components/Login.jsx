@@ -103,11 +103,11 @@ const Login = () => {
 
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="form-container">
-        <h2 className="text-center text-xl font-bold mb-6">Login</h2>
+    <div className="flex items-start justify-center min-h-screen bg-gray-100">
+      <div className="form-container w-full max-w-sm mx-4">
+        <h2 className="text-center text-xl font-bold mb-4 mt-2">Login</h2>
         <form onSubmit={handleLogin}>
-          <div className="mb-4">
+          <div className="mb-2">
             <label htmlFor="email" className="form-label">
               Email:
             </label>

@@ -124,7 +124,7 @@ const EditEvent = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div
-        className="form-container"
+        className="form-container px-4"
         role="form"
         aria-labelledby="edit-event-header"
       >

@@ -104,7 +104,7 @@ const CreateEvent = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div
-        className="form-container"
+        className="form-container px-4"
         role="form"
         aria-labelledby="create-event-header"
       >
@@ -259,18 +259,18 @@ const CreateEvent = () => {
               {error}
             </div>
           )}
-        <div className="flex justify-center">
-          <button
-            type="submit"
-            disabled={loading}
-            className={`button ${
-              loading ? "button-disabled" : "button-primary"
-            }`}
-            aria-busy={loading}
-          >
-            {loading ? "Creating Event..." : "Create Event"}
-          </button>
-        </div>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`button ${
+                loading ? "button-disabled" : "button-primary"
+              }`}
+              aria-busy={loading}
+            >
+              {loading ? "Creating Event..." : "Create Event"}
+            </button>
+          </div>
         </form>
       </div>
     </div>
