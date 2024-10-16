@@ -1,0 +1,4 @@
+# Redirects
+/create-account  /events  301
+/login           /events  301
+/*               /index.html  404
