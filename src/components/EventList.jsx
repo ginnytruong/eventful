@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
+import { XIcon } from "@heroicons/react/solid";
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
@@ -47,8 +48,8 @@ const sortedEvents = filteredEvents.sort((a, b) => {
     case "title":
       return a.title.localeCompare(b.title);
     case "price":
-      return (a.price || 0) - (b.price || 0); // Sort by price
-    default: // Default to sorting by date
+      return (a.price || 0) - (b.price || 0);
+    default:
       return (a.startDateTime || 0) - (b.startDateTime || 0);
   }
 });
@@ -57,6 +58,10 @@ const sortedEvents = filteredEvents.sort((a, b) => {
     setLoading(true);
     setError(null);
     fetchEvents();
+  };
+
+  const clearSearch = () => {
+    setSearchTerm("");
   };
 
   if (loading) {
@@ -102,6 +107,16 @@ const sortedEvents = filteredEvents.sort((a, b) => {
           className="search-bar w-2/3"
           aria-label="Search events"
         />
+
+        {searchTerm && (
+          <button
+            onClick={clearSearch}
+            className="button button-primary w-1/3"
+            aria-label="Clear search"
+          >
+            clear
+          </button>
+        )}
 
         <label htmlFor="sort" className="sr-only">
           Sort events
