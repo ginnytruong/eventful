@@ -27,10 +27,6 @@ const App = () => {
     setPaypalClientId(id);
   }, []);
 
-  if (!googleClientId || !paypalClientId) {
-    return <div className="loading-text">Loading...</div>;
-  }
-
   return (
     <AuthProvider>
       <PayPalScriptProvider options={{ "client-id": paypalClientId }}>
