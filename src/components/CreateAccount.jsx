@@ -87,6 +87,7 @@ const CreateAccount = () => {
       console.log("User after account creation:", user);
       navigate("/events");
     } catch (error) {
+      console.error("Error creating account:", error);
       if (error.code === "auth/email-already-in-use") {
         setError("Email is already registered. Please log in.");
       } else {
