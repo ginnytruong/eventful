@@ -170,10 +170,10 @@ const MyEvents = () => {
               <p className="event-price">Price: £{event.price}</p>
             </div>
             <hr className="my-4" />
-            <div className="button-container flex justify-center items-center">
+            <div className="flex flex-col md:flex-row justify-center items-center">
               <button
                 onClick={() => addToGoogleCalendar(event)}
-                className="button button-primary flex items-center mr-4"
+                className="button button-primary flex items-center"
                 aria-label={`Add ${event.title} to Google Calendar`}
               >
                 <img
