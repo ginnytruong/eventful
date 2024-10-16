@@ -3,8 +3,10 @@ import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+// import { useAuth } from "../context/AuthContext";
 
 const CreateAccount = () => {
+  // const { user } = useAuth(); 
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
@@ -14,6 +16,12 @@ const CreateAccount = () => {
   const [passwordMatch, setPasswordMatch] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate("/events");
+  //   }
+  // }, [user, navigate]); 
 
   const handleInputChange = (e, setState) => {
     setState(e.target.value);
@@ -84,7 +92,7 @@ const CreateAccount = () => {
         eventsRegistered: [],
         role: "non-staff",
       });
-
+      console.log("navigating to /events")
       navigate("/events");
 
     } catch (error) {
