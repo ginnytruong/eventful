@@ -13,7 +13,7 @@ Eventful is fully responsive and designed to work seamlessly on both desktop and
 - **Role-Based Access**: Different functionalities are available based on user roles (staff or non-staff).
 - **Responsive Design**: The platform is designed to be fully responsive and accessible across devices, including mobile.
 
-![alt text](image.png)
+![app preview](<Screenshot 2024-10-16 at 17.10.33.png>)
 
 ## Technologies Used
 
@@ -44,7 +44,7 @@ Use the following test accounts to explore the platform:
 ## Running Locally
 ### Prerequisites
 To run the project locally, you need the following:
-- **Node.js** (version 14 or higher)
+- **Node.js** (version 14 or higher).
 - **Firebase**: Create a project and configure Firebase authentication and Firestore.
 - **Google Calendar API**: Set up a developer account with Google and configure OAuth 2.0 for calendar integration.
 - **PayPal Developer Account**: Set up PayPal API credentials for handling payments.
@@ -67,7 +67,7 @@ To run the project locally, you need the following:
 
 ## Configuration
 
-Before running the app, you need to configure Firebase, Google PayPal SDK. Follow the steps below:
+Before running the app, you need to configure Firebase, Google OAuth, PayPal SDK. Follow the steps below:
 
 ### Firebase Configuration
 
@@ -93,6 +93,18 @@ Before running the app, you need to configure Firebase, Google PayPal SDK. Follo
     ```bash
     VITE_GOOGLE_CLIENT_ID=your-google-client-id
     ```
+4. In the Google Developer Console, under the OAuth 2.0 credentials section, you need to add both redirect URIs for development and production:
+
+    - For local development:
+      ```
+      http://localhost:5173/auth/google/callback
+      ```
+    - For production (replace `your-production-url` with the correct URL):
+      ```
+      https://your-production-url/auth/google/callback
+      ```
+    
+    **Important**: Make sure both of these URIs are added to your Google OAuth 2.0 credentials in the Google Developer Console, as Google needs to know which domains (local and production) it should allow OAuth requests from.
 
 ### PayPal Configuration
 
@@ -127,7 +139,11 @@ This will start the development server, and you can access the app at http://loc
 ## Role-Based Access
 - **Staff Role**: The ability to create and manage events is restricted to staff members.
 - **User Role**: Regular users can browse events and sign up for them.
-- **How to Set Staff Role**: The staff role is manually assigned through Firebase. To set a user as staff, you must manually update the user's role field in the Firebase Firestore database to "staff".
+- **How to Set Staff Role**: 
+1. Navigate to Firestore in the Firebase Console.
+2. Open the users collection.
+3. Select the user document you want to give staff privileges.
+4. Manually add the field: bash role: "staff"
 
 ## Security Considerations
 - **Password Security**: User passwords are securely handled via Firebase Authentication.
