@@ -186,7 +186,7 @@ const MyEvents = () => {
               <button
                 onClick={() => handleCancellation(event.id)}
                 disabled={cancelEventId === event.id}
-                className={`button button-danger w-64 ${
+                className={`button button-danger ml-2${
                   cancelEventId === event.id
                     ? "opacity-50 cursor-not-allowed"
                     : ""
