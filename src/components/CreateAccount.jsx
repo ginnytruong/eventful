@@ -3,10 +3,9 @@ import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-// import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 const CreateAccount = () => {
-  // const { user } = useAuth(); 
   const [email, setEmail] = useState("");
   const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
@@ -17,11 +16,7 @@ const CreateAccount = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/events");
-  //   }
-  // }, [user, navigate]); 
+  const { user } = useAuth();
 
   const handleInputChange = (e, setState) => {
     setState(e.target.value);
@@ -92,9 +87,8 @@ const CreateAccount = () => {
         eventsRegistered: [],
         role: "non-staff",
       });
-      console.log("navigating to /events")
+      console.log("navigating to /events");
       navigate("/events");
-
     } catch (error) {
       console.error("Error creating account:", error);
       if (error.code === "auth/email-already-in-use") {
@@ -106,6 +100,12 @@ const CreateAccount = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/events");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="flex items-start justify-center min-h-screen bg-gray-100">
