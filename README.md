@@ -13,7 +13,7 @@ Eventful is fully responsive and designed to work seamlessly on both desktop and
 - **Role-Based Access**: Different functionalities are available based on user roles (staff or non-staff).
 - **Responsive Design**: The platform is designed to be fully responsive and accessible across devices, including mobile.
 
-![app preview](<Screenshot 2024-10-16 at 17.10.33.png>)
+![app preview](<app-preview.png>)
 
 ## Technologies Used
 
