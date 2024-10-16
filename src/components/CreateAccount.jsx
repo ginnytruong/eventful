@@ -84,7 +84,7 @@ const CreateAccount = () => {
         eventsRegistered: [],
         role: "non-staff",
       });
-
+      console.log("User after account creation:", user);
       navigate("/events");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
