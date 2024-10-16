@@ -85,7 +85,7 @@ const CreateAccount = () => {
         role: "non-staff",
       });
 
-      navigate("/");
+      navigate("/events");
 
     } catch (error) {
       console.error("Error creating account:", error);
