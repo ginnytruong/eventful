@@ -151,7 +151,7 @@ const Login = () => {
               type="button"
               onClick={handleGoogleLogin}
               disabled={loading.google}
-              className={`flex items-center justify-center border border-gray-300 rounded-full p-2 mt-4 ${
+              className={`flex items-center justify-center border border-gray-300 rounded-full p-2 mt-4 mb-4${
                 loading.google ? "button-disabled" : ""
               }`}
               aria-label="Log in with Google"
