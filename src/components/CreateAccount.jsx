@@ -87,8 +87,9 @@ const CreateAccount = () => {
         eventsRegistered: [],
         role: "non-staff",
       });
-      console.log("navigating to /events");
+
       navigate("/events");
+      
     } catch (error) {
       console.error("Error creating account:", error);
       if (error.code === "auth/email-already-in-use") {
