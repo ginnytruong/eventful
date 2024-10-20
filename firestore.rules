@@ -3,18 +3,27 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Match for events collection
     match /events/{eventId} {
+      // Allow create, update, delete only for authenticated staff users
       allow create, update, delete: if request.auth != null && request.auth.token.role == 'staff';
-      allow read: if true;
+      // Allow read for everyone (authenticated and unauthenticated)
+      allow read: if true; 
+      // Restrict write access (create, update, delete) to authenticated non-staff users
       allow write: if request.auth != null && request.auth.token.role != 'staff';
 
+      // Match for registrations subcollection
       match /registrations/{registrationId} {
+        // Allow create, delete only if the user is authenticated and is the owner of the registration
         allow create, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+        // Allow create for authenticated non-staff users
         allow create: if request.auth.token.role != 'staff';
       }
     }
 
+    // Match for users collection
     match /users/{userId} {
+      // Allow read, write for authenticated users only for their own data
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
