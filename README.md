@@ -149,6 +149,7 @@ This will start the development server, and you can access the app at http://loc
 - **Password Security**: User passwords are securely handled via Firebase Authentication.
 - **Payment Security**: Payments are processed through PayPal’s secure SDK.
 - **Role-Based Access**: Different levels of access ensure that only staff can create and manage events.
+- **Firestore Security Rules**: Access to Firestore data is controlled by security rules, allowing users to read and write their own data, while staff members can create and manage events.
 
 ## Accessibility & Responsive Design
 - The app is designed with accessibility in mind, featuring clear labels, error messages, and intuitive navigation.
