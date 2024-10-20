@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { Link } from "react-router-dom";
-import { XIcon } from "@heroicons/react/solid";
 
 const EventList = () => {
   const [events, setEvents] = useState([]);
