@@ -1,13 +1,17 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    // Match all documents in the database
-    match /{document=**} {
-      // Allow read and write access for all users (authenticated and unauthenticated)
-      allow read, write: if true;
+    match /Users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId; // Users can read and write their own data
+    }
+    match /Events/{eventId} {
+      allow read: if true; // Allow public read access to events
+      allow create, update, delete: if request.auth != null && request.auth.token.role == 'staff'; // Only staff can modify events
+    }
+    match /Registrations/{registrationId} {
+      allow read: if request.auth != null; // Authenticated users can read registrations
+      allow create: if request.auth != null; // All authenticated users can create registrations
+      allow delete: if request.auth != null && request.auth.uid == resource.data.userId; // Users can delete their own registrations
     }
   }
 }
-
