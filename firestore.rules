@@ -15,6 +15,9 @@ service cloud.firestore {
 
       // Match for registrations subcollection
       match /Registrations/{registrationId} {
+        // Allow read access for authenticated non-staff users only for their registrations
+        allow read: if request.auth != null && request.auth.token.role == 'non-staff' && request.auth.uid == resource.data.userId;
+
         // Allow create for authenticated non-staff users only
         allow create: if request.auth != null && request.auth.token.role == 'non-staff';
         
@@ -31,9 +34,5 @@ service cloud.firestore {
       // Allow account creation for unauthenticated users
       allow create: if request.auth == null; 
     }
-
-    // Allow non-staff users to access their registrations
-      allow read: if request.auth != null && request.auth.token.role == 'non-staff' && request.auth.uid == userId;
-    }
   }
-
+}
