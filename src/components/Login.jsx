@@ -85,7 +85,7 @@ const Login = () => {
           email: user.email,
           fullName: user.displayName,
           eventsRegistered: [],
-          role: "user",
+          role: "non-staff",
         });
       }
 
