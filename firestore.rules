@@ -13,26 +13,32 @@ service cloud.firestore {
       allow create, update, delete: if request.auth != null && request.auth.token.role == 'staff';
 
 
-      // Match for registrations subcollection
-      match /Registrations/{registrationId} {
-        // Allow read access for authenticated non-staff users only for their registrations
-        allow read: if request.auth != null && request.auth.token.role == 'non-staff' && request.auth.uid == resource.data.docId;
-
-        // Allow create for authenticated non-staff users only
-        allow create: if request.auth != null && request.auth.token.role == 'non-staff';
-        
-        // Allow delete only for the user who created the registration
-        allow delete: if request.auth != null && request.auth.uid == resource.data.userId;
-      }
-    }
-
-    // Match for users collection
+ // Match for Users collection
     match /Users/{userId} {
       // Allow read and write for authenticated users only for their own data
       allow read, write: if request.auth != null && request.auth.uid == userId;
 
       // Allow account creation for unauthenticated users
       allow create: if request.auth == null; 
+
+      // Match for eventsRegistered field
+      match /eventsRegistered/{eventId} {
+        // Allow read access for authenticated non-staff users to their registered events
+        allow read: if request.auth != null && request.auth.token.role == 'non-staff' && request.auth.uid == userId;
+      }
+    }
+
+   // Match for Registrations collection
+    match /Registrations/{registrationId} {
+      // Allow create for authenticated non-staff users only
+      allow create: if request.auth != null && request.auth.token.role == 'non-staff';
+
+      // Allow read access to the registrations of the authenticated user
+      allow read: if request.auth != null && request.auth.uid == resource.data.userID;
+
+      // Allow delete only for the user who created the registration
+      allow delete: if request.auth != null && request.auth.uid == resource.data.userID;
     }
   }
+}
 }
