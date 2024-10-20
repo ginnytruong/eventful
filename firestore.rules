@@ -1,18 +1,8 @@
-rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-
-        // Match for events collection
-    match /Events/{eventId} {
-      // Allow read access for all users (authenticated and unauthenticated)
-      allow read: if true; 
-
-
-    // Allow create, update, delete only for authenticated staff users
-      allow create, update, delete: if request.auth != null && request.auth.token.role == 'staff';
-
+    match /events/{eventId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == resource.data.createdBy;
     }
   }
 }
-
