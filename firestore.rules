@@ -3,11 +3,6 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Match for events collection
-    match /events/{eventId} {
-      // Allow read access for all users (authenticated and unauthenticated)
-      allow read: if true; 
-      
       // Allow create, update, delete only for authenticated staff users
       allow create, update, delete: if request.auth != null && request.auth.token.role == 'staff';
 
@@ -30,4 +25,3 @@ service cloud.firestore {
       allow create: if request.auth == null; 
     }
   }
-}
